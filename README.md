@@ -51,7 +51,7 @@ An example of the input data directory is shown below.
 
 ### Protein region annotation file (For occlusion map, optional)
 The annotation file need to be formatted in CSV format as shown below, with each row indicating the coordinates, type, name of the annotated region, and the coloring scheme (optional) for the annotations.
- 
+ <img src="figs/region_annotation_file.png">
 
 
 # RBP prediction
