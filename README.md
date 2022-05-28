@@ -1,6 +1,8 @@
 
-
-
+# HydRa: Deep-learning models that predicting RNA-binding capacity from protein interaction association context and protein sequence.
+ <img src="figs/SONAR3.0.png">
+ <img src="figs/HydRa_seq.png">
+ <img src="figs/HydRa_final.png">
 
 # Installation
 HydRa is tested to work under Python 3. Running the following code in your terminal window to install HydRa.
