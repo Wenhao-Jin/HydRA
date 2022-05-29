@@ -12,6 +12,7 @@ pip install pandas numpy networkx scikit-learn tensorflow keras matplotlib setup
 
 python3 -m pip install --index-url https://test.pypi.org/simple/ --no-deps hydra-rbp –-upgrade
 ```
+Download the an extra model file (for ProteinBERT-RBP model) under the release menu assets (ProteinBERT_TrainWithWholeProteinSet_defaultSetting_ModelFile.pkl ) into your local directory. (If you are Yeo Lab TSCC user, skip this step.) 
 
 # Prepare the input data
 ### Protein sequences
@@ -57,7 +58,7 @@ The annotation file need to be formatted in CSV format as shown below, with each
 
 
 # RBP prediction
-Run the following command by replacing the parts in the upper case, such as the location of your folder that contains the fasta files of your query proteins `/PATH/TO/FASTA_FILE_FOLDER`, the location where you want to store the output files `/PATH/TO/OUTPUT_FOLDER`, and a customized name for this prediction `MAKE_A_NAME_FOR_THE_PREDICTION` (optional). For predictions with PPI/PPA data, the file path for the PPI and PPA data is also needed.
+Run the following command by replacing the parts in the upper case, such as the location of your folder that contains the fasta files of your query proteins `/PATH/TO/FASTA_FILE_FOLDER`, the location where you want to store the output files `/PATH/TO/OUTPUT_FOLDER`, the location of the ProteinBERT-RBP model file you downloaded previously `/PATH/TO/PROTEINBERT-RBP-MODEL`, and a customized name for this prediction `MAKE_A_NAME_FOR_THE_PREDICTION` (optional). For predictions with PPI/PPA data, the file path for the PPI and PPA data is also needed. For Yeo lab TSCC user, you could use the `/home/wjin/projects/RBP_pred/RBP_identification/HydRa2.0/data/ProteinBERT/ProteinBERT_TrainWithWholeProteinSet_defaultSetting_ModelFile.pkl` on TSCC for `/PATH/TO/PROTEINBERT-RBP-MODEL` instead.
 
 (1)	Predicting protein sequences only. (On TSCC)
 
@@ -73,7 +74,7 @@ HydRa2_predict --seq_dir /PATH/TO/FASTA_FILE_FOLDER \
 
 ```
 HydRa2_predict --seq_dir /PATH/TO/FASTA_FILES \ 
---proteinBERT_modelfile \ /home/wjin/projects/RBP_pred/RBP_identification/HydRa2.0/data/ProteinBERT/ProteinBERT_TrainWithWholeProteinSet_defaultSetting_ModelFile.pkl \ 
+--proteinBERT_modelfile /PATH/TO/PROTEINBERT-RBP-MODEL \ 
 --outdir /PATH/TO/OUTPUT_FOLDER \ 
 -n MAKE_A_NAME_FOR_THIS_PREDICTION \ 
 --PPI_edgelist PATH/TO/PPI_EDGE_LIST \
@@ -81,12 +82,12 @@ HydRa2_predict --seq_dir /PATH/TO/FASTA_FILES \
 ```
 
 # Occlusion Map analysis
-Run the following command by replacing the parts in the upper case, such as the location of your folder that contains the fasta files of your query proteins `/PATH/TO/FASTA_FILES`, the location where you want to store the output files `/PATH/TO/OUTPUT_FOLDER`, and a customized name for this prediction `MAKE_A_NAME_FOR_THE_PREDICTION` (optional). If the annotation track (showing the distribution of specific types of features, e.g. protein domain, disordered region, etc., along the protein sequence), the file path for the protein region annotation file `/PATH/TO/PROTEIN_REGION_ANNOATION_FILE` is also needed.
+Run the following command by replacing the parts in the upper case, such as the location of your folder that contains the fasta files of your query proteins `/PATH/TO/FASTA_FILES`, the location where you want to store the output files `/PATH/TO/OUTPUT_FOLDER`, the location of the ProteinBERT-RBP model file you downloaded previously `/PATH/TO/PROTEINBERT-RBP-MODEL`, and a customized name for this prediction `MAKE_A_NAME_FOR_THE_PREDICTION` (optional). If the annotation track (showing the distribution of specific types of features, e.g. protein domain, disordered region, etc., along the protein sequence), the file path for the protein region annotation file `/PATH/TO/PROTEIN_REGION_ANNOATION_FILE` is also needed. For Yeo lab TSCC user, you could also use the `/home/wjin/projects/RBP_pred/RBP_identification/HydRa2.0/data/ProteinBERT/ProteinBERT_TrainWithWholeProteinSet_defaultSetting_ModelFile.pkl` on TSCC for `/PATH/TO/PROTEINBERT-RBP-MODEL` instead.
 
 ```
 occlusion_map3 -s /PATH/TO/FASTA_FILES \ 
 --out_dir /PATH/TO/OUTPUT_FOLDER \  
---proteinBERT_modelfile /home/wjin/projects/RBP_pred/RBP_identification/HydRa2.0/data/ProteinBERT/ProteinBERT_TrainWithWholeProteinSet_defaultSetting_ModelFile.pkl 
+--proteinBERT_modelfile /PATH/TO/PROTEINBERT-RBP-MODEL \ 
 -n MAKE_A_NAME_FOR_THE_PREDICTION \ 
 --annotation_file /PATH/TO/PROTEIN_REGION_ANNOATION_FILE
 ```
