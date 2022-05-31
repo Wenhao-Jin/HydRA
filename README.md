@@ -8,7 +8,7 @@
 HydRa is tested to work under Python 3. Running the following code in your terminal window to install HydRa.
 
 ```
-$ pip install pandas numpy networkx scikit-learn tensorflow keras matplotlib setuptools
+$ pip install pandas numpy networkx scikit-learn tensorflow keras==2.6.0 matplotlib setuptools
 
 $ python3 -m pip install --index-url https://test.pypi.org/simple/ --no-deps hydra-rbp –-upgrade
 ```
