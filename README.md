@@ -5,7 +5,7 @@
  <img src="figs/HydRa_final.png">
 
 # Installation
-HydRa is tested to work under Python 3. Running the following code in your terminal window to install HydRa. It was recommended to build an new conda environment (if possible) and do the HydRa installation to avoid messing up your current python environment.
+HydRa is tested to work under Python 3. Running the following code in your terminal window to install HydRa. It was recommended to build a new conda environment (if possible) and do the HydRa installation to avoid messing up your current python environment.
 
 ```
 $ pip install pandas numpy networkx==2.6.3 scikit-learn==0.22.1 tensorflow==2.6.0 keras==2.6.0 matplotlib==3.4.3 setuptools
