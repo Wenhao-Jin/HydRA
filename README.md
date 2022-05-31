@@ -13,10 +13,10 @@ $ conda create -n "HydRa" python=3.8.12
 $ conda activate HydRa
 
 ## Install the dependency packages for HydRa
-$ pip3 install pandas numpy networkx==2.6.3 scikit-learn==0.22.1 tensorflow==2.6.0 keras==2.6.0 matplotlib==3.4.3 setuptools
+$ pip3 install pandas numpy networkx==2.6.3 scikit-learn==0.22.1 tensorflow==2.6.0 keras==2.6.0 matplotlib==3.4.3 setuptools Pygments packaging
 
 ## Install HydRa
-$ python3 -m pip install --index-url https://test.pypi.org/simple/ --no-deps hydra-rbp –-upgrade
+$ python3 -m pip install --index-url https://test.pypi.org/simple/ --no-deps hydra-rbp
 ```
 Download the an extra model file (for ProteinBERT-RBP model) under the release menu assets (ProteinBERT_TrainWithWholeProteinSet_defaultSetting_ModelFile.pkl ) into your local directory. (If you are Yeo Lab TSCC user, skip this step.) 
 
