@@ -5,11 +5,17 @@
  <img src="figs/HydRa_final.png">
 
 # Installation
-HydRa is tested to work under Python 3. Running the following code in your terminal window to install HydRa. It was recommended to build a new conda environment (if possible) and do the HydRa installation to avoid messing up your current python environment.
+HydRa is tested to work under Python 3.8. Run the following code in your terminal window to install HydRa. It was recommended to build a new conda environment and do the HydRa installation to avoid messing up your current python environment. An installation tutorial for conda could be found [here](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html).
 
 ```
-$ pip install pandas numpy networkx==2.6.3 scikit-learn==0.22.1 tensorflow==2.6.0 keras==2.6.0 matplotlib==3.4.3 setuptools
+## Create a conda environment for HydRa, and activate the environment
+$ conda create -n "HydRa" python=3.8.12
+$ conda activate HydRa
 
+## Install the dependency packages for HydRa
+$ pip3 install pandas numpy networkx==2.6.3 scikit-learn==0.22.1 tensorflow==2.6.0 keras==2.6.0 matplotlib==3.4.3 setuptools
+
+## Install HydRa
 $ python3 -m pip install --index-url https://test.pypi.org/simple/ --no-deps hydra-rbp –-upgrade
 ```
 Download the an extra model file (for ProteinBERT-RBP model) under the release menu assets (ProteinBERT_TrainWithWholeProteinSet_defaultSetting_ModelFile.pkl ) into your local directory. (If you are Yeo Lab TSCC user, skip this step.) 
