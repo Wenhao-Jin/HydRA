@@ -103,7 +103,7 @@ Run the following command by replacing the parts in the upper case, such as the 
 HydRa_train2  --model_name Model_Name --model_outdir /PATH/TO/OUTPUT_FOLDER -s /PATH/TO/FASTA_FILE_FOLDER \ 
 --train_list /PATH/TO/GENE_IDs_FOR_TRAINING --PPI_edgelist /PATH/TO/PPI_EDGE_LIST  --PPA_edgelist /PATH/TO/PPA_EDGE_LIST \ 
 --RBP_list /YOUR/RBP/LIST --ProteinBERT_pretrainedBeforeFinetune_model /PATH/TO/PROTEINBERT-ORIGINAL-MODEL \ 
---new_pretrain
+--new-pretrain
 ```
 
 # Train and evaluate a new HydRa model
@@ -114,5 +114,5 @@ HydRa2_train_eval  --model_name Model_Name --model_outdir /PATH/TO/OUTPUT_FOLDER
 --train_list /PATH/TO/GENE_IDs_FOR_TRAINING --test_list /PATH/TO/GENE_IDs_FOR_TEST \ 
 --PPI_edgelist /PATH/TO/PPI_EDGE_LIST  --PPA_edgelist /PATH/TO/PPA_EDGE_LIST \ 
 --RBP_list /YOUR/RBP/LIST --ProteinBERT_pretrainedBeforeFinetune_model /PATH/TO/PROTEINBERT-ORIGINAL-MODEL \ 
---new_pretrain
+--new-pretrain
 ```
