@@ -1,0 +1,2 @@
+from .Feature_selection_for_each_feature_after_chi2Filtering_forFinalTraining import chi2_filtering_followedBy_SVMselection, chi2_filtering_Only
+__all__=['chi2_filtering_followedBy_SVMselection','chi2_filtering_Only']

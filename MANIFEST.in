@@ -1,0 +1,2 @@
+include HydRa/data/*
+include HydRa/pre_trained/*
