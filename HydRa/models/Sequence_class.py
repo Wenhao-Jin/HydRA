@@ -10,12 +10,12 @@ aa_code={'H':1, 'K':2, 'D':3, 'E':4,
                  'I':15, 'L':16, 'M':17, 'F':18, 'Y':19,
                  'W':20, 'R':21, 'blank':0}
 aa_code_reverse={v:k for k, v in aa_code.items()}
-BioVec_weights=pd.read_table('/home/wjin/projects/RBP_pred/RBP_identification/Data/protVec_100d_3grams.csv', sep='\t', header=None, index_col=0)
-BioVec_weights_add_null=np.append(np.zeros((1,100)), BioVec_weights.values, axis=0) #append a [0,0,...,0] array at the top of the matrix, which used for padding 0s.
-BioVec_weights_add_null=BioVec_weights_add_null*10
-BioVec_name_dict={}
-for i in range(1, len(BioVec_weights)+1):
-    BioVec_name_dict.update({BioVec_weights.index[i-1]:i})
+# BioVec_weights=pd.read_table('/home/wjin/projects/RBP_pred/RBP_identification/Data/protVec_100d_3grams.csv', sep='\t', header=None, index_col=0)
+# BioVec_weights_add_null=np.append(np.zeros((1,100)), BioVec_weights.values, axis=0) #append a [0,0,...,0] array at the top of the matrix, which used for padding 0s.
+# BioVec_weights_add_null=BioVec_weights_add_null*10
+# BioVec_name_dict={}
+# for i in range(1, len(BioVec_weights)+1):
+#     BioVec_name_dict.update({BioVec_weights.index[i-1]:i})
 
 
 class Protein_Sequence_Input5:
@@ -23,7 +23,7 @@ class Protein_Sequence_Input5:
     Modified so that when doing the padding, always pad the vector to the length of (self.max_seq_len/(maxlen/2))*(maxlen/2)+self.maxlen/2, which is consistent with the length used in DNNseq class.
     Different from version Protein_Sequence_Input4: Shift ss_seq (i.e. remove the first and end of the sequence) in order to match the position of corresponding amino acid (from aa3mer)
     """
-    def __init__(self, files, class_labels, BioVec_name_dict=BioVec_name_dict, maxlen=1500):
+    def __init__(self, files, class_labels, BioVec_name_dict, maxlen=1500):
         """
         files: a list of sequence filenames including the absolute path, best in numpy.array format.
         class_labels: a list recording the RBP identity (True or False) of each protein mentioned in "files", best in numpy.array format.
@@ -246,7 +246,7 @@ class Protein_Sequence_Input5_noSS:
     Modified so that when doing the padding, always pad the vector to the length of (self.max_seq_len/(maxlen/2))*(maxlen/2)+self.maxlen/2, which is consistent with the length used in DNNseq class.
     Different from version Protein_Sequence_Input4: Shift ss_seq (i.e. remove the first and end of the sequence) in order to match the position of corresponding amino acid (from aa3mer)
     """
-    def __init__(self, files, class_labels, BioVec_name_dict=BioVec_name_dict, maxlen=1500):
+    def __init__(self, files, class_labels, BioVec_name_dict, maxlen=1500):
         """
         files: a list of sequence filenames including the absolute path, best in numpy.array format.
         class_labels: a list recording the RBP identity (True or False) of each protein mentioned in "files", best in numpy.array format.
@@ -414,7 +414,7 @@ class Protein_Sequence_Input5_2:
     """
     The version for sequence inputs rather than seqfiles input.
     """
-    def __init__(self, seq_name, prot_seq, ss_seq, class_labels, BioVec_name_dict=BioVec_name_dict, maxlen=1500):
+    def __init__(self, seq_name, prot_seq, ss_seq, class_labels, BioVec_name_dict, maxlen=1500):
         """
         seq_name: list of strings. 
         prot_seq: list of strings. Protein's amino acid sequence.
@@ -610,7 +610,7 @@ class Protein_Sequence_Input5_2_noSS:
     """
     The version for sequence inputs rather than seqfiles input.
     """
-    def __init__(self, seq_name, prot_seq, class_labels, BioVec_name_dict=BioVec_name_dict, maxlen=1500):
+    def __init__(self, seq_name, prot_seq, class_labels, BioVec_name_dict, maxlen=1500):
         """
         seq_name: list of strings, the names of each sequence. 
         prot_seq: list of strings. Protein's amino acid sequence.
