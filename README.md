@@ -18,7 +18,7 @@ $ pip3 install pandas numpy protobuf==3.20 networkx==2.6.3 scikit-learn==0.22.1 
 ## Install HydRa
 $ python3 -m pip install --index-url https://test.pypi.org/simple/ --no-deps --upgrade hydra-rbp
 ```
-Download ProteinBERT-RBP model (i.e. ProteinBERT_TrainWithWholeProteinSet_defaultSetting_ModelFile.pkl) from [here](https://drive.google.com/file/d/1r1xTgizQVFwO28eHz735OjXtoE5vfqhD/view?usp=share_link), uncompress it and move it into your local directory. (If you are Yeo Lab TSCC user, skip this step.) 
+Download ProteinBERT-RBP model (i.e. ProteinBERT_TrainWithWholeProteinSet_defaultSetting_ModelFile.pkl.gz) from [here](https://drive.google.com/file/d/1r1xTgizQVFwO28eHz735OjXtoE5vfqhD/view?usp=share_link), uncompress it with gunzip tool and move it into your local directory. (If you are Yeo Lab TSCC user, skip this step.) 
 
 # Prepare the input data
 ### Protein sequences
