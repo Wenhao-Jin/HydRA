@@ -1,8 +1,8 @@
 
 # HydRA: Deep-learning models for predicting RNA-binding capacity from protein interaction association context and protein sequence.
  <img src="figs/SONAR3.0.png">
- <img src="figs/HydRa_seq.png">
- <img src="figs/HydRa_final.png">
+ <img src="figs/HydRA_seq.png">
+ <img src="figs/HydRA_final.png">
 
 # Installation
 HydRa is tested to work under Python 3.8. Run the following code in your terminal window to install HydRa. It was recommended to build a new conda environment and do the HydRa installation to avoid messing up your current python environment. An installation tutorial for conda could be found [here](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html).
