@@ -728,7 +728,7 @@ class Protein_Sequence_Input5_bk:
     """
     Different from version Protein_Sequence_Input4: Shift ss_seq (i.e. remove the first and end of the sequence) in order to match the position of corresponding amino acid (from aa3mer)
     """
-    def __init__(self, files, class_labels, BioVec_name_dict=BioVec_name_dict, max_seqlen=1500):
+    def __init__(self, files, class_labels, BioVec_name_dict, max_seqlen=1500):
         """
         files: a list of sequence filenames including the absolute path, best in numpy.array format.
         class_labels: a list recording the RBP identity (True or False) of each protein mentioned in "files", best in numpy.array format.
