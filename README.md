@@ -1,6 +1,7 @@
 
 # HydRA: Deep-learning models for predicting RNA-binding capacity from protein interaction association context and protein sequence.
  SONAR3.0
+ <img src="figs/zenodo.DOI.svg">
  <img src="figs/SONAR3.0.png">
  HydRA-seq
  <img src="figs/HydRA_seq.png">
