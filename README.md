@@ -69,11 +69,11 @@ The annotation file need to be formatted in CSV format as shown below, with each
 # RBP prediction
 Run the following command by replacing the parts in the upper case, such as the location of your folder that contains the fasta files of your query proteins `/PATH/TO/FASTA_FILE_FOLDER`, the location where you want to store the output files `/PATH/TO/OUTPUT_FOLDER`, the location of the ProteinBERT-RBP model file you downloaded previously `/PATH/TO/PROTEINBERT-RBP-MODEL`, and a customized name for this prediction `MAKE_A_NAME_FOR_THE_PREDICTION` (optional). For predictions with PPI/PPA data, the file path for the PPI and PPA data is also needed. For Yeo lab TSCC user, you could use the `/home/wjin/projects/RBP_pred/RBP_identification/HydRa2.0/data/ProteinBERT/ProteinBERT_TrainWithWholeProteinSet_defaultSetting_ModelFile.pkl` on TSCC for `/PATH/TO/PROTEINBERT-RBP-MODEL` instead.
 
-(1)	Predicting protein sequences only. (On TSCC)
+(1)	Predicting protein sequences only.
 
 ```
 $ HydRa2_predict --seq_dir /PATH/TO/FASTA_FILE_FOLDER \ 
---proteinBERT_modelfile /home/wjin/projects/RBP_pred/RBP_identification/HydRa2.0/data/ProteinBERT/ProteinBERT_TrainWithWholeProteinSet_defaultSetting_ModelFile.pkl \ 
+--proteinBERT_modelfile /PATH/TO/PROTEINBERT-RBP-MODEL \ 
 --outdir /PATH/TO/OUTPUT_FOLDER \ 
 -n MAKE_A_NAME_FOR_THE_PREDICTION \ 
 --no-PIA --no-PPA
