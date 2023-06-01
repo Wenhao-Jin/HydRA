@@ -1,0 +1,3 @@
+[submodule "strucGNNs"]
+	path = strucGNNs
+	url = https://github.com/Wenhao-Jin/strucGNN_RBP
