@@ -21,7 +21,7 @@ $ conda activate HydRa
 $ pip3 install pandas numpy protobuf==3.20 networkx==2.6.3 scikit-learn==0.22.1 tensorflow==2.6.0 keras==2.6.0 matplotlib==3.4.3 setuptools Pygments packaging protein-bert
 
 ## Install HydRa
-$ pip install hydra-rbp
+$ pip3 install hydra-rbp
 ## Alternative command: $ python3 -m pip install --index-url https://test.pypi.org/simple/ --no-deps --upgrade hydra-rbp
 ```
 Download ProteinBERT-RBP model (i.e. ProteinBERT_TrainWithWholeProteinSet_defaultSetting_ModelFile.pkl.gz) from [here](https://drive.google.com/file/d/1r1xTgizQVFwO28eHz735OjXtoE5vfqhD/view?usp=share_link), uncompress it with gunzip tool and move it into your local directory. Or you could also find the ProteinBERT_TrainWithWholeProteinSet_defaultSetting_ModelFile.pkl in the assets of the Releases v0.1.21.25 in this repository. (If you are Yeo Lab TSCC user, skip this step.) 
