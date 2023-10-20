@@ -292,12 +292,15 @@ def main(args):
 				interactors_dic={prot:list(PPI_1stInteractors_df[PPI_1stInteractors_df.Bait==prot]['Preys']) for prot in proteins}
 			else:
 				interactors_dic={}
-			for prot in proteins:
-				if prot in interactors_dic:
-					PPI_features.append(get_PPI_feature_vec(prot, G1, RBP_merged_set, num_cut, interactors_dic[prot]))
-				else:
-					PPI_features.append(get_PPI_feature_vec(prot, G1, RBP_merged_set, num_cut))
-
+			#for prot in proteins:
+			#	if prot in interactors_dic:
+			#		PPI_features.append(get_PPI_feature_vec(prot, G1, RBP_merged_set, num_cut, interactors_dic[prot]))
+			#	else:
+			#		PPI_features.append(get_PPI_feature_vec(prot, G1, RBP_merged_set, num_cut))
+			pool=mp.Pool(processes=None)
+                        result2=[pool.apply_async(get_PPI_feature_vec, args=(prot, G1, RBP_merged_set, num_cut, interactors_dic[prot],)) if prot in interactors_dic else pool.apply_async(get_PPI_feature_vec, args=(prot, G1, RBP_merged_set, num_cut,)) for prot in proteins]
+                        PPI_features=[p.get() for p in result2]
+			
 			PPI_feature_df=pd.DataFrame(PPI_features, index=proteins, columns=['primary_RBP_ratio','secondary_RBP_ratio','tertiary_RBP_ratio','Reliability'])
 			PPI_feature_file=os.path.join(score_outdir, Model_name+'_PPI_feature_table.txt')
 			PPI_feature_df.to_csv(PPI_feature_file, sep='\t', index=True)
@@ -308,10 +311,13 @@ def main(args):
 				RBP_merged_set=set(RBP_list.split('\n'))
 
 				num_cut=PPI2_1stNB_threshold
-				PAI_features=[]
-				for prot in proteins:
-				    PAI_features.append(get_1stPPI_feature_vec(prot, G2, RBP_merged_set, num_cut))
-
+				#PAI_features=[]
+				#for prot in proteins:
+				#    PAI_features.append(get_1stPPI_feature_vec(prot, G2, RBP_merged_set, num_cut))
+				pool2=mp.Pool(processes=None)
+                                result3=[pool2.apply_async(get_1stPPI_feature_vec, args=(prot, G2, RBP_merged_set, num_cut,)) for prot in proteins]
+                                PAI_features=[p.get() for p in result3]
+				
 				PAI_feature_df=pd.DataFrame(PAI_features, index=proteins, columns=['primary_RBP_ratio','Reliability'])
 				PPI2_feature_df=PPI_feature_df.join(PAI_feature_df, how='left', rsuffix='_STRING')
 
