@@ -17,7 +17,7 @@ import keras.backend as K
 from keras.callbacks import EarlyStopping, ReduceLROnPlateau, ModelCheckpoint
 #from scipy import interp, stats
 #from keras.layers.wrappers import TimeDistributed, Bidirectional
-from keras.layers.core import Reshape
+#from keras.layers.core import Reshape
 from keras.models import load_model, model_from_json
 from keras import regularizers
 #import pickle
