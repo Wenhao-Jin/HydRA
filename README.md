@@ -102,7 +102,8 @@ $ occlusion_map3 -s /PATH/TO/FASTA_FILES \
 --out_dir /PATH/TO/OUTPUT_FOLDER \  
 --proteinBERT_modelfile /PATH/TO/PROTEINBERT-RBP-MODEL \ 
 -n MAKE_A_NAME_FOR_THE_PREDICTION \ 
---annotation_file /PATH/TO/PROTEIN_REGION_ANNOATION_FILE
+--annotation_file /PATH/TO/PROTEIN_REGION_ANNOATION_FILE \ 
+--draw_ensemble_only
 ```
 In the output folder you will find the occlusion map plots as below:
  <img src="figs/RBFOX2_occlusion.png">
