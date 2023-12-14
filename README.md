@@ -18,15 +18,15 @@ HydRa is tested to work under Python 3.8. Run the following code in your termina
 
 ```
 ## Create a conda environment for HydRa, and activate the environment
-$ conda create -n "HydRa" python=3.8.12
-$ conda activate HydRa
+conda create -n "HydRa" python=3.8.12
+conda activate HydRa
 
 ## Install the dependency packages for HydRa
-$ pip3 install pandas numpy protobuf==3.20 networkx==2.6.3 scikit-learn==0.22.1 tensorflow==2.6.0 keras==2.6.0 matplotlib==3.4.3 setuptools Pygments packaging protein-bert
+pip3 install pandas numpy protobuf==3.20 networkx==2.6.3 scikit-learn==0.22.1 tensorflow==2.6.0 keras==2.6.0 matplotlib==3.4.3 setuptools Pygments packaging protein-bert
 
 ## Install HydRa
-$ pip3 install hydra-rbp
-## Alternative command: $ python3 -m pip install --index-url https://test.pypi.org/simple/ --no-deps --upgrade hydra-rbp
+pip3 install hydra-rbp
+## Alternative command: python3 -m pip install --index-url https://test.pypi.org/simple/ --no-deps --upgrade hydra-rbp
 ```
 Download ProteinBERT-RBP model (i.e. ProteinBERT_TrainWithWholeProteinSet_defaultSetting_ModelFile.pkl.gz) from [here](https://drive.google.com/file/d/1r1xTgizQVFwO28eHz735OjXtoE5vfqhD/view?usp=share_link), uncompress it with gunzip tool and move it into your local directory. Or you could also find the ProteinBERT_TrainWithWholeProteinSet_defaultSetting_ModelFile.pkl in the assets of the Releases v0.1.21.29 in this repository. (If you are Yeo Lab TSCC user, skip this step.) 
 
@@ -79,7 +79,7 @@ Run the following command by replacing the parts in the upper case, such as the 
 (1)	Predicting protein sequences only.
 
 ```
-$ HydRa2_predict --seq_dir /PATH/TO/FASTA_FILE_FOLDER \ 
+HydRa2_predict --seq_dir /PATH/TO/FASTA_FILE_FOLDER \ 
 --proteinBERT_modelfile /PATH/TO/PROTEINBERT-RBP-MODEL \ 
 --outdir /PATH/TO/OUTPUT_FOLDER \ 
 -n MAKE_A_NAME_FOR_THE_PREDICTION \ 
@@ -89,7 +89,7 @@ $ HydRa2_predict --seq_dir /PATH/TO/FASTA_FILE_FOLDER \
 (2)	Predicting with protein-protein interaction (PPI), protein-protein association(PPA) data and protein sequences.
 
 ```
-$ HydRa2_predict --seq_dir /PATH/TO/FASTA_FILES \ 
+HydRa2_predict --seq_dir /PATH/TO/FASTA_FILES \ 
 --proteinBERT_modelfile /PATH/TO/PROTEINBERT-RBP-MODEL \ 
 --outdir /PATH/TO/OUTPUT_FOLDER \ 
 -n MAKE_A_NAME_FOR_THIS_PREDICTION \ 
@@ -102,7 +102,7 @@ If `--PPI_edgelist` and `--PPA_edgelist` are not provided, the default human PPI
 Run the following command by replacing the parts in the upper case, such as the location of your folder that contains the fasta files of your query proteins `/PATH/TO/FASTA_FILES`, the location where you want to store the output files `/PATH/TO/OUTPUT_FOLDER`, the location of the ProteinBERT-RBP model file you downloaded previously `/PATH/TO/PROTEINBERT-RBP-MODEL`, and a customized name for this prediction `MAKE_A_NAME_FOR_THE_PREDICTION` (optional). To plot the annotation track (showing the distribution of specific types of features, e.g. protein domain, disordered region, etc., along the protein sequence), the file path for the protein region annotation file `/PATH/TO/PROTEIN_REGION_ANNOATION_FILE` (see more details [here](#protein-region-annotation-file-for-occlusion-map-optional)) is also needed. For Yeo lab TSCC user, you could also use the `/home/wjin/projects/RBP_pred/RBP_identification/HydRa2.0/data/ProteinBERT/ProteinBERT_TrainWithWholeProteinSet_defaultSetting_ModelFile.pkl` on TSCC for `/PATH/TO/PROTEINBERT-RBP-MODEL` instead.
 
 ```
-$ occlusion_map3 -s /PATH/TO/FASTA_FILES \ 
+occlusion_map3 -s /PATH/TO/FASTA_FILES \ 
 --out_dir /PATH/TO/OUTPUT_FOLDER \  
 --proteinBERT_modelfile /PATH/TO/PROTEINBERT-RBP-MODEL \ 
 -n MAKE_A_NAME_FOR_THE_PREDICTION \ 
