@@ -41,7 +41,7 @@ conda install -c apple tensorflow-deps -y
 python -m pip install tensorflow-macos==2.7.0
 
 ## Install the dependency packages for HydRa
-pip3 install pandas numpy protobuf==3.20.3 networkx==2.6.3 scikit-learn==0.22.1 matplotlib==3.4.3 setuptools Pygments packaging protein-bert
+pip3 install pandas numpy protobuf==3.20.3 networkx==2.6.3 scikit-learn matplotlib setuptools Pygments packaging protein-bert
 
 ## Install HydRa
 pip3 install hydra-rbp
