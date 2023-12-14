@@ -26,7 +26,7 @@ conda activate HydRa
 pip3 install pandas numpy protobuf==3.20.3 networkx==2.6.3 scikit-learn==0.22.1 tensorflow==2.6.0 keras==2.6.0 matplotlib==3.4.3 setuptools Pygments packaging protein-bert
 
 ## Install HydRa
-pip3 install hydra-rbp
+pip3 install hydra-rbp --no-deps
 ## Alternative command: python3 -m pip install --index-url https://test.pypi.org/simple/ --no-deps --upgrade hydra-rbp
 ```
 ## For Mac os (M1/M2 chips) user:
