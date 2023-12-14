@@ -44,7 +44,7 @@ python -m pip install tensorflow-macos==2.7.0
 pip3 install pandas numpy protobuf==3.20.3 networkx==2.6.3 scikit-learn matplotlib setuptools Pygments packaging protein-bert
 
 ## Install HydRa
-pip3 install hydra-rbp
+pip3 install hydra-rbp --no-deps
 ## Alternative command: python3 -m pip install --index-url https://test.pypi.org/simple/ --no-deps --upgrade hydra-rbp
 ```
 
