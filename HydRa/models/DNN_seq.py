@@ -6,7 +6,7 @@ import os
 import math
 from random import shuffle
 from sklearn.model_selection import StratifiedKFold
-from keras.utils import np_utils
+#from keras.utils import np_utils
 from tensorflow.keras.utils import to_categorical
 from keras.models import Sequential, Model, load_model
 from keras.layers import Dense, Input, Dropout, Activation, Layer, InputSpec, add, Concatenate
