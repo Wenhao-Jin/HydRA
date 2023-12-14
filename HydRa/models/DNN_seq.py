@@ -7,6 +7,7 @@ import math
 from random import shuffle
 from sklearn.model_selection import StratifiedKFold
 from keras.utils import np_utils
+from tensorflow.keras.utils import to_categorical
 from keras.models import Sequential, Model, load_model
 from keras.layers import Dense, Input, Dropout, Activation, merge, Layer, InputSpec, add, Concatenate
 from keras.layers import Embedding
@@ -100,10 +101,10 @@ class SONARp_DNN_SeqOnly_noSS:
             #print X_aa3mer_train.shape, X_ss_sparse_train.shape, y_train.shape
             
             #early_stopping=EarlyStopping(monitor='val_matthews_correlation', patience=8)
-            history=self.model.fit([X_aa3mer_train], np_utils.to_categorical(y_train),
+            history=self.model.fit([X_aa3mer_train], to_categorical(y_train),
               batch_size=self.batch_size, \
               epochs=200, \
-              validation_data=([X_aa3mer_val], np_utils.to_categorical(y_val)), \
+              validation_data=([X_aa3mer_val], to_categorical(y_val)), \
               class_weight=self.class_weight)#,\
             #callbacks=[early_stopping])
         else:
@@ -112,7 +113,7 @@ class SONARp_DNN_SeqOnly_noSS:
             #print X_aa3mer_train.shape, X_ss_sparse_train.shape, y_train.shape
             
             #early_stopping=EarlyStopping(monitor='val_matthews_correlation', patience=8)
-            history=self.model.fit([X_aa3mer_train], np_utils.to_categorical(y_train),
+            history=self.model.fit([X_aa3mer_train], to_categorical(y_train),
               batch_size=self.batch_size, \
               epochs=200, \
               class_weight=self.class_weight)#,\
@@ -393,10 +394,10 @@ class SONARp_DNN_SeqOnly:
             #print X_aa3mer_train.shape, X_ss_sparse_train.shape, y_train.shape
             
             #early_stopping=EarlyStopping(monitor='val_matthews_correlation', patience=8)
-            history=self.model.fit([X_aa3mer_train, X_ss_sparse_train], np_utils.to_categorical(y_train),
+            history=self.model.fit([X_aa3mer_train, X_ss_sparse_train], to_categorical(y_train),
               batch_size=self.batch_size, \
               epochs=200, \
-              validation_data=([X_aa3mer_val, X_ss_sparse_val], np_utils.to_categorical(y_val)), \
+              validation_data=([X_aa3mer_val, X_ss_sparse_val], to_categorical(y_val)), \
               class_weight=self.class_weight)#,\
             #callbacks=[early_stopping])
         else:
@@ -405,7 +406,7 @@ class SONARp_DNN_SeqOnly:
             #print X_aa3mer_train.shape, X_ss_sparse_train.shape, y_train.shape
             
             #early_stopping=EarlyStopping(monitor='val_matthews_correlation', patience=8)
-            history=self.model.fit([X_aa3mer_train, X_ss_sparse_train], np_utils.to_categorical(y_train),
+            history=self.model.fit([X_aa3mer_train, X_ss_sparse_train], to_categorical(y_train),
               batch_size=self.batch_size, \
               epochs=200, \
               class_weight=self.class_weight)#,\
@@ -675,10 +676,10 @@ class SONARp_DNN_SeqOnly_2:
             #print X_aa3mer_train.shape, X_ss_sparse_train.shape, y_train.shape
             
             #early_stopping=EarlyStopping(monitor='val_matthews_correlation', patience=8)
-            history=self.model.fit([X_aa3mer_train, X_ss_sparse_train], np_utils.to_categorical(y_train),
+            history=self.model.fit([X_aa3mer_train, X_ss_sparse_train], to_categorical(y_train),
               batch_size=self.batch_size, \
               epochs=200, \
-              validation_data=([X_aa3mer_val, X_ss_sparse_val], np_utils.to_categorical(y_val)), \
+              validation_data=([X_aa3mer_val, X_ss_sparse_val], to_categorical(y_val)), \
               class_weight=self.class_weight)#,\
             #callbacks=[early_stopping])
         else:
@@ -687,7 +688,7 @@ class SONARp_DNN_SeqOnly_2:
             #print X_aa3mer_train.shape, X_ss_sparse_train.shape, y_train.shape
             
             #early_stopping=EarlyStopping(monitor='val_matthews_correlation', patience=8)
-            history=self.model.fit([X_aa3mer_train, X_ss_sparse_train], np_utils.to_categorical(y_train),
+            history=self.model.fit([X_aa3mer_train, X_ss_sparse_train], to_categorical(y_train),
               batch_size=self.batch_size, \
               epochs=200, \
               class_weight=self.class_weight)#,\
@@ -934,10 +935,10 @@ class SONARp_DNN_SeqOnly_bk:
             #print X_aa3mer_train.shape, X_ss_sparse_train.shape, y_train.shape
             
             #early_stopping=EarlyStopping(monitor='val_matthews_correlation', patience=8)
-            history=self.model.fit([X_aa3mer_train, X_ss_sparse_train], np_utils.to_categorical(y_train),
+            history=self.model.fit([X_aa3mer_train, X_ss_sparse_train], to_categorical(y_train),
               batch_size=self.batch_size, \
               epochs=200, \
-              validation_data=([X_aa3mer_val, X_ss_sparse_val], np_utils.to_categorical(y_val)), \
+              validation_data=([X_aa3mer_val, X_ss_sparse_val], to_categorical(y_val)), \
               class_weight=self.class_weight)#,\
             #callbacks=[early_stopping])
         else:
@@ -946,7 +947,7 @@ class SONARp_DNN_SeqOnly_bk:
             #print X_aa3mer_train.shape, X_ss_sparse_train.shape, y_train.shape
             
             #early_stopping=EarlyStopping(monitor='val_matthews_correlation', patience=8)
-            history=self.model.fit([X_aa3mer_train, X_ss_sparse_train], np_utils.to_categorical(y_train),
+            history=self.model.fit([X_aa3mer_train, X_ss_sparse_train], to_categorical(y_train),
               batch_size=self.batch_size, \
               epochs=200, \
               class_weight=self.class_weight)#,\
