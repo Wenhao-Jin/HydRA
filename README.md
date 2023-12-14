@@ -23,7 +23,7 @@ conda create -n "HydRa" python=3.8.12
 conda activate HydRa
 
 ## Install the dependency packages for HydRa
-pip3 install pandas numpy protobuf==3.20 networkx==2.6.3 scikit-learn==0.22.1 tensorflow==2.6.0 keras==2.6.0 matplotlib==3.4.3 setuptools Pygments packaging protein-bert
+pip3 install pandas numpy protobuf==3.20.3 networkx==2.6.3 scikit-learn==0.22.1 tensorflow==2.6.0 keras==2.6.0 matplotlib==3.4.3 setuptools Pygments packaging protein-bert
 
 ## Install HydRa
 pip3 install hydra-rbp
