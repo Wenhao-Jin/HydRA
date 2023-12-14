@@ -9,7 +9,7 @@ from sklearn.model_selection import StratifiedKFold
 from keras.utils import np_utils
 from tensorflow.keras.utils import to_categorical
 from keras.models import Sequential, Model, load_model
-from keras.layers import Dense, Input, Dropout, Activation, merge, Layer, InputSpec, add, Concatenate
+from keras.layers import Dense, Input, Dropout, Activation, Layer, InputSpec, add, Concatenate
 from keras.layers import Embedding
 from keras.layers import Conv1D, MaxPooling1D, GlobalMaxPooling1D, BatchNormalization, UpSampling1D
 from keras import metrics
