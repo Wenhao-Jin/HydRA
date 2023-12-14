@@ -19,7 +19,7 @@ HydRa is tested to work under Python 3.8. Run the following code in your termina
 ## For Linux user:
 ```
 ## Create a conda environment for HydRa, and activate the environment
-conda create -n "HydRa" python=3.8.12
+conda create -n "HydRa" python=3.8.12 -y
 conda activate HydRa
 
 ## Install the dependency packages for HydRa
@@ -33,7 +33,7 @@ pip3 install hydra-rbp
 The installation of Tensorflow on Mac OS (m1/m2) chips are different from that in Linux system (a good tutorial can be found [here](https://github.com/deganza/Install-TensorFlow-on-Mac-M1-GPU/blob/main/Install-TensorFlow-on-Mac-M1-GPU.ipynb))
 ```
 ## Create a conda environment for HydRa, and activate the environment
-conda create -n "HydRa" python=3.9
+conda create -n "HydRa" python=3.9 -y
 conda activate HydRa
 
 ## Install tensorflow on Mac
