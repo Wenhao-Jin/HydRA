@@ -37,12 +37,11 @@ conda create -n "HydRa" python=3.9
 conda activate HydRa
 
 ## Install tensorflow on Mac
-conda install -c apple tensorflow-deps
-pip install tensorflow-macos
-pip install tensorflow-metal
+conda install -c apple tensorflow-deps -y  
+python -m pip install tensorflow-macos==2.7.0
 
 ## Install the dependency packages for HydRa
-pip3 install pandas numpy protobuf==3.20 networkx==2.6.3 scikit-learn==0.22.1 matplotlib==3.4.3 setuptools Pygments packaging protein-bert
+pip3 install pandas numpy protobuf==3.20.3 networkx==2.6.3 scikit-learn==0.22.1 matplotlib==3.4.3 setuptools Pygments packaging protein-bert
 
 ## Install HydRa
 pip3 install hydra-rbp
