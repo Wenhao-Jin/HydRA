@@ -1100,7 +1100,7 @@ def run_ensemble(RBP_uniprotID, out_dir, scores_DNN=None, scores_SVM=None, score
         df['delta_fdr_ens']=df.apply(lambda x: x['occluded_fdr_ens_scores']-x['original_fdr_ens_score'], axis=1)
         df.to_csv(os.path.join(out_dir, RBP_uniprotID+'_Occlusion_score_matrix_full_aac_fdrEnsemble.xls'), index=True, sep='\t')
 
-def plot_occlusion(RBP_uniprotID, out_dir, wind_size, annotation_file=None, annotation_file_separator=',', ens_delta_zscore_col='avg_zscore_deltaSVM_deltaDNN_deltaProteinBERT', ens_delta_zscore_track_name='Avg. Standardized Delta Scores',run_fdr_ensemble=False, p_threshold1=0.05, p_threshold2=0.001):
+def plot_occlusion(RBP_uniprotID, out_dir, wind_size, annotation_file=None, annotation_file_separator=',', ens_delta_zscore_col='avg_zscore_deltaSVM_deltaDNN_deltaProteinBERT', ens_delta_zscore_track_name='Avg. Standardized Delta Scores',run_fdr_ensemble=False, p_threshold1=0.05, p_threshold2=0.001, draw_ensemble_only=False):
     """
     annotation_file: a table with columns of Start, Stop, Type and region_name. The Start and Stop columns contains the 1-based coordinates of the region for annotation. An Example is shown here:
     ___________________________________________________________
@@ -1145,7 +1145,10 @@ def plot_occlusion(RBP_uniprotID, out_dir, wind_size, annotation_file=None, anno
         ann_df.Type=ann_df.Type.apply(lambda x: x.strip(' ').upper())
         ann_df_g=ann_df.groupby('Type')
         types=list(ann_df_g.groups.keys())
-        f, ax = plt.subplots(6+len(types), 1, figsize=(20, 3*(6+len(types))))
+        if draw_ensemble_only == True:
+            f, ax = plt.subplots(2+len(types), 1, figsize=(20, 3*(2+len(types))))
+        else:
+            f, ax = plt.subplots(5+len(types), 1, figsize=(20, 3*(5+len(types))))
         cm = plt.cm.get_cmap('Pastel1')
         for i in range(len(types)):
             t=types[i]
@@ -1183,70 +1186,121 @@ def plot_occlusion(RBP_uniprotID, out_dir, wind_size, annotation_file=None, anno
                         ax[i].text((start+end)/2, 0.5*int(len(delta_ens)/100), dom, fontsize='large', horizontalalignment='center',verticalalignment='center')
 
             ax[i].set_title(RBP_uniprotID+'_'+t,fontsize='x-large',verticalalignment='bottom')
+        if draw_ensemble_only == True:
+            ax[len(types)].plot(range(len(delta_ens)),delta_ens, lw=1.5, c='k')
+            ax[len(types)].set_xlim(0,len(delta_ens))
+            ax[len(types)].axhline(y=0,ls='-', color='grey', lw=2)
+            ax[len(types)].set_title(RBP_uniprotID+'-'+ens_delta_zscore_track_name, fontsize='x-large')
+            #ax[len(types)].plot(delta_ens_sig_coords, np.zeros(len(delta_ens_sig_coords)), 'r.')
+            # Fill positive peak areas with blue and negative with purple
+            ax[len(types)].fill_between(range(len(delta_ens)), delta_ens, where=(np.array(delta_ens)>=0), interpolate=True, color='steelblue')
+            ax[len(types)].fill_between(range(len(delta_ens)), delta_ens, where=(np.array(delta_ens)<0), interpolate=True, color='mediumorchid')
+            # Set the background color to "plum" with 20% transparency
+            ax[len(types)].set_facecolor((0.867, 0.627, 0.867, 0.2))
+    
+            peaks_coords1=occ_df[occ_df['avg_zscore_deltaSVM_deltaDNN_deltaProteinBERT_pvalue']<=p_threshold1]['occluded_coord']
+            peaks_coords2=occ_df[occ_df['avg_zscore_deltaSVM_deltaDNN_deltaProteinBERT_pvalue']<=p_threshold2]['occluded_coord']
+            print("sig peak regions (p<{}): {}".format(p_threshold1,', '.join(merge_peaks(list(peaks_coords1)))))
+            print("sig peak regions (p<{}): {}".format(p_threshold2,', '.join(merge_peaks(list(peaks_coords2)))))
+            #print(occ_df[occ_df['avg_zscore_deltaSVM_deltaDNN_deltaProteinBERT_pvalue']<=p_threshold2][['avg_zscore_deltaSVM_deltaDNN_deltaProteinBERT_pvalue','occluded_coord']])
+            peaks_pos1=set([])
+            peaks_pos2=set([])
+            for coo1 in peaks_coords1:
+                peaks_pos1.update(list(range(int(coo1.split('-')[0]),int(coo1.split('-')[1])+1)))
+            for coo2 in peaks_coords2:
+                peaks_pos2.update(list(range(int(coo2.split('-')[0]),int(coo2.split('-')[1])+1)))    
+            peak_bar=np.zeros(len(occ_df)+19)
+    #                 print(peaks_pos1)
+    #                 print(peaks_pos2)
+            for i in peaks_pos1:
+                peak_bar[i]=1
+            for j in peaks_pos2:
+                peak_bar[j]=2
+            peak_bar=np.array([peak_bar]*max(int(len(occ_df)/60),1))
+            im9=ax[len(types)+1].imshow(peak_bar, cmap=pvalue_cmap, vmin=0, vmax=2)
+            ax[len(types)+1].set_title('Significant occlusion peaks',fontsize='x-large')
+            ## Create custom legend lines
+            custom_lines = [Line2D([0], [0], color="lightskyblue", lw=6),
+                            Line2D([0], [0], color="steelblue", lw=6)]
+            # Add the legend to the same axes as the imshow plot
+            ax[len(types)+1].legend(custom_lines, ['p < {}'.format(p_threshold1), 'p < {}'.format(p_threshold2)], loc='best', bbox_to_anchor=(1.05, -2), fontsize='xx-large')
 
-        ax[len(types)].plot(range(len(delta_SVM)),delta_SVM, lw=2)
-        ax[len(types)].set_xlim(0,len(delta_SVM))
-        ax[len(types)].axhline(y=0,ls='-', color='grey', lw=2)
-        ax[len(types)].set_title('Standardized Delta Scores in seqSVM, (Occ - origin) | orig_seqSVM: {}'.format(orig_SVM),fontsize='x-large')
-        ax[len(types)].plot(delta_SVM_sig_coords, np.zeros(len(delta_SVM_sig_coords)), 'r.')
-        ax[len(types)+1].plot(range(len(delta_DNN)),delta_DNN, lw=2)
-        ax[len(types)+1].set_xlim(0,len(delta_DNN))
-        ax[len(types)+1].axhline(y=0,ls='-', color='grey', lw=2)
-        ax[len(types)+1].set_title('Standardized Delta Scores in seqCNN, (Occ - origin) | orig_seqCNN: {}'.format(orig_DNN),fontsize='x-large')
-        ax[len(types)+1].plot(delta_DNN_sig_coords, np.zeros(len(delta_DNN_sig_coords)), 'r.')
-        ax[len(types)+2].plot(range(len(delta_ProteinBERT)),delta_ProteinBERT, lw=2)
-        ax[len(types)+2].set_xlim(0,len(delta_ProteinBERT))
-        ax[len(types)+2].axhline(y=0,ls='-', color='grey', lw=2)
-        ax[len(types)+2].set_title('Standardized Delta Scores in ProteinBERT, (Occ - origin) | orig_ProteinBERT: {}'.format(orig_ProteinBERT),fontsize='x-large')
-        ax[len(types)+2].plot(delta_ProteinBERT_sig_coords, np.zeros(len(delta_ProteinBERT_sig_coords)), 'r.')
-        ax[len(types)+3].plot(range(len(delta_ens)),delta_ens, lw=2)
-        ax[len(types)+3].set_xlim(0,len(delta_ens))
-        ax[len(types)+3].axhline(y=0,ls='-', color='grey', lw=2)
-        ax[len(types)+3].set_title(RBP_uniprotID+'-'+ens_delta_zscore_track_name, fontsize='x-large')
-        ax[len(types)+3].plot(delta_ens_sig_coords, np.zeros(len(delta_ens_sig_coords)), 'r.')
-        peaks_coords1=occ_df[occ_df['avg_zscore_deltaSVM_deltaDNN_deltaProteinBERT_pvalue']<=p_threshold1]['occluded_coord']
-        peaks_coords2=occ_df[occ_df['avg_zscore_deltaSVM_deltaDNN_deltaProteinBERT_pvalue']<=p_threshold2]['occluded_coord']
-        print("sig peak regions (p<{}): {}".format(p_threshold1,', '.join(merge_peaks(list(peaks_coords1)))))
-        print("sig peak regions (p<{}): {}".format(p_threshold2,', '.join(merge_peaks(list(peaks_coords2)))))
-        #print(occ_df[occ_df['avg_zscore_deltaSVM_deltaDNN_deltaProteinBERT_pvalue']<=p_threshold2][['avg_zscore_deltaSVM_deltaDNN_deltaProteinBERT_pvalue','occluded_coord']])
-        peaks_pos1=set([])
-        peaks_pos2=set([])
-        for coo1 in peaks_coords1:
-            peaks_pos1.update(list(range(int(coo1.split('-')[0]),int(coo1.split('-')[1])+1)))
-        for coo2 in peaks_coords2:
-            peaks_pos2.update(list(range(int(coo2.split('-')[0]),int(coo2.split('-')[1])+1)))    
-        peak_bar=np.zeros(len(occ_df)+19)
-#                 print(peaks_pos1)
-#                 print(peaks_pos2)
-        for i in peaks_pos1:
-            peak_bar[i]=1
-        for j in peaks_pos2:
-            peak_bar[j]=2
-        peak_bar=np.array([peak_bar]*max(int(len(occ_df)/60),1))
-        im9=ax[len(types)+4].imshow(peak_bar, cmap=pvalue_cmap, vmin=0, vmax=2)
-        ax[len(types)+4].set_title('Significant occlusion peaks',fontsize='x-large')
-        #f.colorbar(im9, ax=ax[len(types)+5])
-        custom_lines = [Line2D([0], [0], color= "lightskyblue", lw=6), Line2D([0], [0], color="steelblue", lw=6)]
-        ax[len(types)+5].legend(custom_lines, ['p < {}'.format(p_threshold1), 'p < {}'.format(p_threshold2)], loc='right',fontsize='xx-large')
+        else:
+            ax[len(types)].plot(range(len(delta_SVM)),delta_SVM, lw=2)
+            ax[len(types)].set_xlim(0,len(delta_SVM))
+            ax[len(types)].axhline(y=0,ls='-', color='grey', lw=2)
+            ax[len(types)].set_title('Standardized Delta Scores in seqSVM, (Occ - origin) | orig_seqSVM: {}'.format(orig_SVM),fontsize='x-large')
+            ax[len(types)].plot(delta_SVM_sig_coords, np.zeros(len(delta_SVM_sig_coords)), 'r.')
+            ax[len(types)+1].plot(range(len(delta_DNN)),delta_DNN, lw=2)
+            ax[len(types)+1].set_xlim(0,len(delta_DNN))
+            ax[len(types)+1].axhline(y=0,ls='-', color='grey', lw=2)
+            ax[len(types)+1].set_title('Standardized Delta Scores in seqCNN, (Occ - origin) | orig_seqCNN: {}'.format(orig_DNN),fontsize='x-large')
+            ax[len(types)+1].plot(delta_DNN_sig_coords, np.zeros(len(delta_DNN_sig_coords)), 'r.')
+            ax[len(types)+2].plot(range(len(delta_ProteinBERT)),delta_ProteinBERT, lw=2)
+            ax[len(types)+2].set_xlim(0,len(delta_ProteinBERT))
+            ax[len(types)+2].axhline(y=0,ls='-', color='grey', lw=2)
+            ax[len(types)+2].set_title('Standardized Delta Scores in ProteinBERT, (Occ - origin) | orig_ProteinBERT: {}'.format(orig_ProteinBERT),fontsize='x-large')
+            ax[len(types)+2].plot(delta_ProteinBERT_sig_coords, np.zeros(len(delta_ProteinBERT_sig_coords)), 'r.')
+            ax[len(types)+3].plot(range(len(delta_ens)),delta_ens, lw=1.5, c='k')
+            ax[len(types)+3].set_xlim(0,len(delta_ens))
+            ax[len(types)+3].axhline(y=0,ls='-', color='grey', lw=2)
+            ax[len(types)+3].set_title(RBP_uniprotID+'-'+ens_delta_zscore_track_name, fontsize='x-large')
+            #ax[len(types)+3].plot(delta_ens_sig_coords, np.zeros(len(delta_ens_sig_coords)), 'r.')
+            # Fill positive peak areas with blue and negative with purple
+            ax[len(types)+3].fill_between(range(len(delta_ens)), delta_ens, where=(np.array(delta_ens)>=0), interpolate=True, color='steelblue')
+            ax[len(types)+3].fill_between(range(len(delta_ens)), delta_ens, where=(np.array(delta_ens)<0), interpolate=True, color='mediumorchid')
+            # Set the background color to "plum" with 20% transparency
+            ax[len(types)+3].set_facecolor((0.867, 0.627, 0.867, 0.2))
+    
+            peaks_coords1=occ_df[occ_df['avg_zscore_deltaSVM_deltaDNN_deltaProteinBERT_pvalue']<=p_threshold1]['occluded_coord']
+            peaks_coords2=occ_df[occ_df['avg_zscore_deltaSVM_deltaDNN_deltaProteinBERT_pvalue']<=p_threshold2]['occluded_coord']
+            print("sig peak regions (p<{}): {}".format(p_threshold1,', '.join(merge_peaks(list(peaks_coords1)))))
+            print("sig peak regions (p<{}): {}".format(p_threshold2,', '.join(merge_peaks(list(peaks_coords2)))))
+            #print(occ_df[occ_df['avg_zscore_deltaSVM_deltaDNN_deltaProteinBERT_pvalue']<=p_threshold2][['avg_zscore_deltaSVM_deltaDNN_deltaProteinBERT_pvalue','occluded_coord']])
+            peaks_pos1=set([])
+            peaks_pos2=set([])
+            for coo1 in peaks_coords1:
+                peaks_pos1.update(list(range(int(coo1.split('-')[0]),int(coo1.split('-')[1])+1)))
+            for coo2 in peaks_coords2:
+                peaks_pos2.update(list(range(int(coo2.split('-')[0]),int(coo2.split('-')[1])+1)))    
+            peak_bar=np.zeros(len(occ_df)+19)
+    #                 print(peaks_pos1)
+    #                 print(peaks_pos2)
+            for i in peaks_pos1:
+                peak_bar[i]=1
+            for j in peaks_pos2:
+                peak_bar[j]=2
+            peak_bar=np.array([peak_bar]*max(int(len(occ_df)/60),1))
+            im9=ax[len(types)+4].imshow(peak_bar, cmap=pvalue_cmap, vmin=0, vmax=2)
+            ax[len(types)+4].set_title('Significant occlusion peaks',fontsize='x-large')
+            ## Create custom legend lines
+            custom_lines = [Line2D([0], [0], color="lightskyblue", lw=6),
+                            Line2D([0], [0], color="steelblue", lw=6)]
+            # Add the legend to the same axes as the imshow plot
+            ax[len(types)+4].legend(custom_lines, ['p < {}'.format(p_threshold1), 'p < {}'.format(p_threshold2)], loc='best', bbox_to_anchor=(1.05, -2), fontsize='xx-large')
 
 
     else:
-        f, (ax1, ax2, ax3, ax4, ax5, ax6) = plt.subplots(6, 1, figsize=(20, 18)) 
-        ax1.plot(range(len(delta_SVM)),delta_SVM, lw=2)
-        ax1.set_xlim(0,len(delta_SVM))
-        ax1.axhline(y=0,ls='-', color='grey', lw=2)
-        ax1.set_title('Standardized Delta Scores in SVM, (Occ - origin) | orig_seqSVM: {}'.format(orig_SVM),fontsize='x-large')
-        ax1.plot(delta_SVM_sig_coords, np.zeros(len(delta_SVM_sig_coords)), 'r.')
-        ax2.plot(range(len(delta_DNN)),delta_DNN, lw=2)
-        ax2.set_xlim(0,len(delta_DNN))
-        ax2.axhline(y=0,ls='-', color='grey', lw=2)
-        ax2.set_title('Standardized Delta Scores in DNN, (Occ - origin) | orig_seqCNN: {}'.format(orig_DNN),fontsize='x-large')
-        ax2.plot(delta_DNN_sig_coords, np.zeros(len(delta_DNN_sig_coords)), 'r.')
-        ax3.plot(range(len(delta_ProteinBERT)),delta_ProteinBERT, lw=2)
-        ax3.set_xlim(0,len(delta_ProteinBERT))
-        ax3.axhline(y=0,ls='-', color='grey', lw=2)
-        ax3.set_title('Standardized Delta Scores in ProteinBERT, (Occ - origin) | orig_ProteinBERT: {}'.format(orig_ProteinBERT),fontsize='x-large')
-        ax3.plot(delta_ProteinBERT_sig_coords, np.zeros(len(delta_ProteinBERT_sig_coords)), 'r.')
+        if draw_ensemble_only == True:
+            f, (ax4, ax5) = plt.subplots(2, 1, figsize=(20, 3*2))
+        else:
+            f, (ax1, ax2, ax3, ax4, ax5) = plt.subplots(5, 1, figsize=(20, 15)) 
+            ax1.plot(range(len(delta_SVM)),delta_SVM, lw=2)
+            ax1.set_xlim(0,len(delta_SVM))
+            ax1.axhline(y=0,ls='-', color='grey', lw=2)
+            ax1.set_title('Standardized Delta Scores in SVM, (Occ - origin) | orig_seqSVM: {}'.format(orig_SVM),fontsize='x-large')
+            ax1.plot(delta_SVM_sig_coords, np.zeros(len(delta_SVM_sig_coords)), 'r.')
+            ax2.plot(range(len(delta_DNN)),delta_DNN, lw=2)
+            ax2.set_xlim(0,len(delta_DNN))
+            ax2.axhline(y=0,ls='-', color='grey', lw=2)
+            ax2.set_title('Standardized Delta Scores in DNN, (Occ - origin) | orig_seqCNN: {}'.format(orig_DNN),fontsize='x-large')
+            ax2.plot(delta_DNN_sig_coords, np.zeros(len(delta_DNN_sig_coords)), 'r.')
+            ax3.plot(range(len(delta_ProteinBERT)),delta_ProteinBERT, lw=2)
+            ax3.set_xlim(0,len(delta_ProteinBERT))
+            ax3.axhline(y=0,ls='-', color='grey', lw=2)
+            ax3.set_title('Standardized Delta Scores in ProteinBERT, (Occ - origin) | orig_ProteinBERT: {}'.format(orig_ProteinBERT),fontsize='x-large')
+            ax3.plot(delta_ProteinBERT_sig_coords, np.zeros(len(delta_ProteinBERT_sig_coords)), 'r.')
+            
         ax4.plot(range(len(delta_ens)),delta_ens, lw=2)
         ax4.set_xlim(0,len(delta_ens))
         ax4.axhline(y=0,ls='-', color='grey', lw=2)
@@ -1274,9 +1328,12 @@ def plot_occlusion(RBP_uniprotID, out_dir, wind_size, annotation_file=None, anno
         peak_bar=np.array([peak_bar]*max(int(len(occ_df)/60),1))
         im9=ax5.imshow(peak_bar, cmap=pvalue_cmap, vmin=0, vmax=2)
         ax5.set_title('Significant occlusion peaks',fontsize='x-large')
-        custom_lines = [Line2D([0], [0], color= "lightskyblue", lw=6), Line2D([0], [0], color="steelblue", lw=6)]
-        ax6.legend(custom_lines, ['p < {}'.format(p_threshold1), 'p < {}'.format(p_threshold2)], loc='right',fontsize='xx-large')
-        #f.colorbar(im9, ax=ax6)
+        ## Create custom legend lines
+        custom_lines = [Line2D([0], [0], color="lightskyblue", lw=6),
+                        Line2D([0], [0], color="steelblue", lw=6)]
+        # Add the legend to the same axes as the imshow plot
+        ax5.legend(custom_lines, ['p < {}'.format(p_threshold1), 'p < {}'.format(p_threshold2)], loc='best', bbox_to_anchor=(1.05, -2), fontsize='xx-large')
+
 
 
     plt.tight_layout()
@@ -1334,6 +1391,7 @@ def main(args):
     run_fdr_ensemble=args.run_fdr_ensemble
     upper_bound_protlenNorm=args.upper_bound_protlenNorm
     plotting_occlusion=args.plotting_occlusion
+    draw_ensemble_only=args.draw_ensemble_only
 
     if model_dir == None:
         if no_secondary_structure:
@@ -1636,9 +1694,9 @@ def main(args):
         if plotting_occlusion:
             for RBP in RBPs:
                 if run_fdr_ensemble:
-                    plot_occlusion(RBP, out_dir, k, annotation_file=annotation_file,annotation_file_separator=annotation_file_separator, ens_delta_zscore_col='zscore_deltaFdrEns', ens_delta_zscore_track_name='Zscore of Delta FDR ensemble score', run_fdr_ensemble=True)
+                    plot_occlusion(RBP, out_dir, k, annotation_file=annotation_file,annotation_file_separator=annotation_file_separator, ens_delta_zscore_col='zscore_deltaFdrEns', ens_delta_zscore_track_name='Zscore of Delta FDR ensemble score', run_fdr_ensemble=True, draw_ensemble_only=draw_ensemble_only)
                 else:
-                    plot_occlusion(RBP, out_dir, k, annotation_file=annotation_file,annotation_file_separator=annotation_file_separator)
+                    plot_occlusion(RBP, out_dir, k, annotation_file=annotation_file,annotation_file_separator=annotation_file_separator, draw_ensemble_only=draw_ensemble_only)
 
 
     #pool=mp.Pool(processes=16)
@@ -1690,6 +1748,8 @@ def call_main():
     parser.add_argument('--secondary-structure', dest='no_secondary_structure', help='Use secondary structure information in the model training.', action='store_false')
     parser.add_argument('--upper_bound_protlenNorm', dest='upper_bound_protlenNorm', help='The upper bound of protein length when we normalize the occlusion scores groupped by protein length. So all the proteins with length larger than this value will form a single group and do the normalization (z-score transformation). Usually pick a number*100 in Fibonacci sequence.', type=int, default=2100)
     parser.add_argument('--not_plot_occlusion', dest='plotting_occlusion', help='Not plot the occlusion maps.', action='store_false')
+    parser.add_argument('--draw_ensemble_only', dest='draw_ensemble_only', help='Only plot the occlusion maps from the ensemble predictions (which combine the outputs from seqSVM, seqCNN and ProteinBERT-RBP).', action='store_true')
+    
     args=parser.parse_args()
 
    
