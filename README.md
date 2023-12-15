@@ -29,19 +29,21 @@ pip3 install pandas numpy protobuf==3.20.3 networkx==2.6.3 scikit-learn==0.22.1 
 pip3 install hydra-rbp --no-deps
 ## Alternative command: python3 -m pip install --index-url https://test.pypi.org/simple/ --no-deps --upgrade hydra-rbp
 ```
-## For Mac os (M1/M2 chips) user:
+## For Mac os (M1/M2 chips) user (Sorry, we are still working on it):
 The installation of Tensorflow on Mac OS (m1/m2) chips are different from that in Linux system (a good tutorial can be found [here](https://github.com/deganza/Install-TensorFlow-on-Mac-M1-GPU/blob/main/Install-TensorFlow-on-Mac-M1-GPU.ipynb))
 ```
 ## Create a conda environment for HydRa, and activate the environment
 conda create -n "HydRa" python=3.9 -y
 conda activate HydRa
 
-## Install tensorflow on Mac
+## Install tensorflow on Mac m1/m2
 conda install -c apple tensorflow-deps -y  
-python -m pip install tensorflow-macos==2.7.0
+
+## Install scikit-learn 0.22 on Mac m1/m2, not feasible it.
 
 ## Install the dependency packages for HydRa
 pip3 install pandas numpy protobuf==3.20.3 networkx==2.6.3 scikit-learn matplotlib setuptools Pygments packaging protein-bert
+python -m pip install tensorflow-macos==2.7.0
 
 ## Install HydRa
 pip3 install hydra-rbp --no-deps
