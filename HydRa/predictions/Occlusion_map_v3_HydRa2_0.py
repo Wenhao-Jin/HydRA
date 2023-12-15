@@ -1224,7 +1224,11 @@ def plot_occlusion(RBP_uniprotID, out_dir, wind_size, annotation_file=None, anno
                             Line2D([0], [0], color="steelblue", lw=6)]
             # Add the legend to the same axes as the imshow plot
             ax[len(types)+1].legend(custom_lines, ['p < {}'.format(p_threshold1), 'p < {}'.format(p_threshold2)], loc='best', bbox_to_anchor=(1.05, -2), fontsize='xx-large')
-
+            plt.tight_layout()
+            if not run_fdr_ensemble:
+                f.savefig(os.path.join(out_dir,RBP_uniprotID+'_OcclusionMap1D.pdf'),format='pdf')
+            else:
+                f.savefig(os.path.join(out_dir,RBP_uniprotID+'_FdrEns_OcclusionMap1D.pdf'),format='pdf')
         else:
             ax[len(types)].plot(range(len(delta_SVM)),delta_SVM, lw=2)
             ax[len(types)].set_xlim(0,len(delta_SVM))
@@ -1278,11 +1282,15 @@ def plot_occlusion(RBP_uniprotID, out_dir, wind_size, annotation_file=None, anno
                             Line2D([0], [0], color="steelblue", lw=6)]
             # Add the legend to the same axes as the imshow plot
             ax[len(types)+4].legend(custom_lines, ['p < {}'.format(p_threshold1), 'p < {}'.format(p_threshold2)], loc='best', bbox_to_anchor=(1.05, -2), fontsize='xx-large')
-
-
+        
+            plt.tight_layout()
+            if not run_fdr_ensemble:
+                f.savefig(os.path.join(out_dir,RBP_uniprotID+'_OcclusionMap1D.pdf'),format='pdf')
+            else:
+                f.savefig(os.path.join(out_dir,RBP_uniprotID+'_FdrEns_OcclusionMap1D.pdf'),format='pdf')
     else:
         if draw_ensemble_only == True:
-            f, (ax4, ax5) = plt.subplots(2, 1, figsize=(20, 3*2))
+            f, (ax4, ax5) = plt.subplots(2, 1, figsize=(20, 6))
         else:
             f, (ax1, ax2, ax3, ax4, ax5) = plt.subplots(5, 1, figsize=(20, 15)) 
             ax1.plot(range(len(delta_SVM)),delta_SVM, lw=2)
@@ -1339,11 +1347,11 @@ def plot_occlusion(RBP_uniprotID, out_dir, wind_size, annotation_file=None, anno
         # Add the legend to the same axes as the imshow plot
         ax5.legend(custom_lines, ['p < {}'.format(p_threshold1), 'p < {}'.format(p_threshold2)], loc='best', bbox_to_anchor=(1.05, -2), fontsize='xx-large')
 
-    plt.tight_layout()
-    if not run_fdr_ensemble:
-        f.savefig(os.path.join(out_dir,RBP_uniprotID+'_OcclusionMap1D.pdf'),format='pdf')
-    else:
-        f.savefig(os.path.join(out_dir,RBP_uniprotID+'_FdrEns_OcclusionMap1D.pdf'),format='pdf')
+        plt.tight_layout()
+        if not run_fdr_ensemble:
+            f.savefig(os.path.join(out_dir,RBP_uniprotID+'_OcclusionMap1D.pdf'),format='pdf')
+        else:
+            f.savefig(os.path.join(out_dir,RBP_uniprotID+'_FdrEns_OcclusionMap1D.pdf'),format='pdf')
         
 def main(args):
     no_secondary_structure=args.no_secondary_structure
