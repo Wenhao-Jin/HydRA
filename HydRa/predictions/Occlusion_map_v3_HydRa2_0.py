@@ -1218,7 +1218,7 @@ def plot_occlusion(RBP_uniprotID, out_dir, wind_size, annotation_file=None, anno
                 peak_bar[j]=2
             peak_bar=np.array([peak_bar]*max(int(len(occ_df)/60),1))
             ax[len(types)+1].imshow(peak_bar, cmap=pvalue_cmap, vmin=0, vmax=2)
-            ax[len(types)+1].set_title('Significant occlusion peaks',fontsize='x-large')
+            ax[len(types)+1].set_title('Significant occlusion peaks',fontsize='x-large',verticalalignment='bottom')
             ## Create custom legend lines
             custom_lines = [Line2D([0], [0], color="lightskyblue", lw=6),
                             Line2D([0], [0], color="steelblue", lw=6)]
@@ -1272,7 +1272,7 @@ def plot_occlusion(RBP_uniprotID, out_dir, wind_size, annotation_file=None, anno
                 peak_bar[j]=2
             peak_bar=np.array([peak_bar]*max(int(len(occ_df)/60),1))
             ax[len(types)+4].imshow(peak_bar, cmap=pvalue_cmap, vmin=0, vmax=2)
-            ax[len(types)+4].set_title('Significant occlusion peaks',fontsize='x-large')
+            ax[len(types)+4].set_title('Significant occlusion peaks',fontsize='x-large',verticalalignment='bottom')
             ## Create custom legend lines
             custom_lines = [Line2D([0], [0], color="lightskyblue", lw=6),
                             Line2D([0], [0], color="steelblue", lw=6)]
@@ -1332,7 +1332,7 @@ def plot_occlusion(RBP_uniprotID, out_dir, wind_size, annotation_file=None, anno
             peak_bar[j]=2
         peak_bar=np.array([peak_bar]*max(int(len(occ_df)/60),1))
         ax5.imshow(peak_bar, cmap=pvalue_cmap, vmin=0, vmax=2)
-        ax5.set_title('Significant occlusion peaks',fontsize='x-large')
+        ax5.set_title('Significant occlusion peaks',fontsize='x-large', verticalalignment='bottom')
         ## Create custom legend lines
         custom_lines = [Line2D([0], [0], color="lightskyblue", lw=6),
                         Line2D([0], [0], color="steelblue", lw=6)]
@@ -1344,6 +1344,7 @@ def plot_occlusion(RBP_uniprotID, out_dir, wind_size, annotation_file=None, anno
         f.savefig(os.path.join(out_dir,RBP_uniprotID+'_OcclusionMap1D.pdf'),format='pdf')
     else:
         f.savefig(os.path.join(out_dir,RBP_uniprotID+'_FdrEns_OcclusionMap1D.pdf'),format='pdf')
+        
 def main(args):
     no_secondary_structure=args.no_secondary_structure
     k=args.window_size
