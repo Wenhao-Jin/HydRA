@@ -1217,7 +1217,7 @@ def plot_occlusion(RBP_uniprotID, out_dir, wind_size, annotation_file=None, anno
             for j in peaks_pos2:
                 peak_bar[j]=2
             peak_bar=np.array([peak_bar]*max(int(len(occ_df)/60),1))
-            im9=ax[len(types)+1].imshow(peak_bar, cmap=pvalue_cmap, vmin=0, vmax=2)
+            ax[len(types)+1].imshow(peak_bar, cmap=pvalue_cmap, vmin=0, vmax=2)
             ax[len(types)+1].set_title('Significant occlusion peaks',fontsize='x-large')
             ## Create custom legend lines
             custom_lines = [Line2D([0], [0], color="lightskyblue", lw=6),
@@ -1271,7 +1271,7 @@ def plot_occlusion(RBP_uniprotID, out_dir, wind_size, annotation_file=None, anno
             for j in peaks_pos2:
                 peak_bar[j]=2
             peak_bar=np.array([peak_bar]*max(int(len(occ_df)/60),1))
-            im9=ax[len(types)+4].imshow(peak_bar, cmap=pvalue_cmap, vmin=0, vmax=2)
+            ax[len(types)+4].imshow(peak_bar, cmap=pvalue_cmap, vmin=0, vmax=2)
             ax[len(types)+4].set_title('Significant occlusion peaks',fontsize='x-large')
             ## Create custom legend lines
             custom_lines = [Line2D([0], [0], color="lightskyblue", lw=6),
@@ -1301,7 +1301,7 @@ def plot_occlusion(RBP_uniprotID, out_dir, wind_size, annotation_file=None, anno
             ax3.set_title('Standardized Delta Scores in ProteinBERT, (Occ - origin) | orig_ProteinBERT: {}'.format(orig_ProteinBERT),fontsize='x-large')
             ax3.plot(delta_ProteinBERT_sig_coords, np.zeros(len(delta_ProteinBERT_sig_coords)), 'r.')
             
-        ax4.plot(range(len(delta_ens)),delta_ens, lw=2)
+        ax4.plot(range(len(delta_ens)),delta_ens, lw=1.5, c='k')
         ax4.set_xlim(0,len(delta_ens))
         ax4.axhline(y=0,ls='-', color='grey', lw=2)
         ax4.set_title(RBP_uniprotID+'-'+ens_delta_zscore_track_name, fontsize='x-large')
@@ -1326,7 +1326,7 @@ def plot_occlusion(RBP_uniprotID, out_dir, wind_size, annotation_file=None, anno
         for j in peaks_pos2:
             peak_bar[j]=2
         peak_bar=np.array([peak_bar]*max(int(len(occ_df)/60),1))
-        im9=ax5.imshow(peak_bar, cmap=pvalue_cmap, vmin=0, vmax=2)
+        ax5.imshow(peak_bar, cmap=pvalue_cmap, vmin=0, vmax=2)
         ax5.set_title('Significant occlusion peaks',fontsize='x-large')
         ## Create custom legend lines
         custom_lines = [Line2D([0], [0], color="lightskyblue", lw=6),
