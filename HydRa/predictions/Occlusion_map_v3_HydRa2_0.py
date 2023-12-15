@@ -1306,6 +1306,11 @@ def plot_occlusion(RBP_uniprotID, out_dir, wind_size, annotation_file=None, anno
         ax4.axhline(y=0,ls='-', color='grey', lw=2)
         ax4.set_title(RBP_uniprotID+'-'+ens_delta_zscore_track_name, fontsize='x-large')
         ax4.plot(delta_ens_sig_coords, np.zeros(len(delta_ens_sig_coords)), 'r.')
+        ax4.fill_between(range(len(delta_ens)), delta_ens, where=(np.array(delta_ens)>=0), interpolate=True, color='steelblue')
+        ax4.fill_between(range(len(delta_ens)), delta_ens, where=(np.array(delta_ens)<0), interpolate=True, color='mediumorchid')
+        # Set the background color to "plum" with 20% transparency
+        ax4.set_facecolor((0.867, 0.627, 0.867, 0.2))
+    
         peaks_coords1=occ_df[occ_df['avg_zscore_deltaSVM_deltaDNN_deltaProteinBERT_pvalue']<=p_threshold1]['occluded_coord']
         peaks_coords2=occ_df[occ_df['avg_zscore_deltaSVM_deltaDNN_deltaProteinBERT_pvalue']<=p_threshold2]['occluded_coord']
         print('All the print out coordinates are 0-based (starting from 0 rather than 1).')
