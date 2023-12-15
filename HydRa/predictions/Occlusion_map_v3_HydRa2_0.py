@@ -1339,8 +1339,6 @@ def plot_occlusion(RBP_uniprotID, out_dir, wind_size, annotation_file=None, anno
         # Add the legend to the same axes as the imshow plot
         ax5.legend(custom_lines, ['p < {}'.format(p_threshold1), 'p < {}'.format(p_threshold2)], loc='best', bbox_to_anchor=(1.05, -2), fontsize='xx-large')
 
-
-
     plt.tight_layout()
     if not run_fdr_ensemble:
         f.savefig(os.path.join(out_dir,RBP_uniprotID+'_OcclusionMap1D.pdf'),format='pdf')
