@@ -103,20 +103,20 @@ Run the following command by replacing the parts in the upper case, such as the 
 (1)	Predicting protein sequences only.
 
 ```
-HydRa2_predict --seq_dir /PATH/TO/FASTA_FILE_FOLDER \ 
---proteinBERT_modelfile /PATH/TO/PROTEINBERT-RBP-MODEL \ 
---outdir /PATH/TO/OUTPUT_FOLDER \ 
--n MAKE_A_NAME_FOR_THE_PREDICTION \ 
+HydRa2_predict --seq_dir /PATH/TO/FASTA_FILE_FOLDER \
+--proteinBERT_modelfile /PATH/TO/PROTEINBERT-RBP-MODEL \
+--outdir /PATH/TO/OUTPUT_FOLDER \
+-n MAKE_A_NAME_FOR_THE_PREDICTION \
 --no-PIA --no-PPA
 ```
 
 (2)	Predicting with protein-protein interaction (PPI), protein-protein association(PPA) data and protein sequences.
 
 ```
-HydRa2_predict --seq_dir /PATH/TO/FASTA_FILES \ 
---proteinBERT_modelfile /PATH/TO/PROTEINBERT-RBP-MODEL \ 
---outdir /PATH/TO/OUTPUT_FOLDER \ 
--n MAKE_A_NAME_FOR_THIS_PREDICTION \ 
+HydRa2_predict --seq_dir /PATH/TO/FASTA_FILES \
+--proteinBERT_modelfile /PATH/TO/PROTEINBERT-RBP-MODEL \
+--outdir /PATH/TO/OUTPUT_FOLDER \
+-n MAKE_A_NAME_FOR_THIS_PREDICTION \
 --PPI_edgelist PATH/TO/PPI_EDGE_LIST \
 --PPA_edgelist PATH/TO/PPA_EDGE_LIST
 ```
@@ -126,11 +126,11 @@ If `--PPI_edgelist` and `--PPA_edgelist` are not provided, the default human PPI
 Run the following command by replacing the parts in the upper case, such as the location of your folder that contains the fasta files of your query proteins `/PATH/TO/FASTA_FILE_FOLDER`, the location where you want to store the output files `/PATH/TO/OUTPUT_FOLDER`, the location of the ProteinBERT-RBP model file you downloaded previously `/PATH/TO/PROTEINBERT-RBP-MODEL`, and a customized name for this prediction `MAKE_A_NAME_FOR_THE_PREDICTION` (optional). To plot the annotation track (showing the distribution of specific types of features, e.g. protein domain, disordered region, etc., along the protein sequence), the file path for the protein region annotation file `/PATH/TO/PROTEIN_REGION_ANNOATION_FILE` (see more details [here](#protein-region-annotation-file-for-occlusion-map-optional)) is also needed. For Yeo lab TSCC user, you could also use the `/home/wjin/projects/RBP_pred/RBP_identification/HydRa2.0/data/ProteinBERT/ProteinBERT_TrainWithWholeProteinSet_defaultSetting_ModelFile.pkl` on TSCC for `/PATH/TO/PROTEINBERT-RBP-MODEL` instead.
 
 ```
-occlusion_map3 -s /PATH/TO/FASTA_FILE_FOLDER \ 
---out_dir /PATH/TO/OUTPUT_FOLDER \  
---proteinBERT_modelfile /PATH/TO/PROTEINBERT-RBP-MODEL \ 
--n MAKE_A_NAME_FOR_THE_PREDICTION \ 
---annotation_file /PATH/TO/PROTEIN_REGION_ANNOATION_FILE \ 
+occlusion_map3 -s /PATH/TO/FASTA_FILE_FOLDER \
+--out_dir /PATH/TO/OUTPUT_FOLDER \
+--proteinBERT_modelfile /PATH/TO/PROTEINBERT-RBP-MODEL \
+-n MAKE_A_NAME_FOR_THE_PREDICTION \
+--annotation_file /PATH/TO/PROTEIN_REGION_ANNOATION_FILE \
 --draw_ensemble_only
 ```
 In the output folder you will find the occlusion map plots below:
