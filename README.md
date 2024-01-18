@@ -56,10 +56,10 @@ Download ProteinBERT-RBP model (i.e. ProteinBERT_TrainWithWholeProteinSet_defaul
 
 # Prepare the input data
 ### Protein sequences
-The sequence should be stored in FASTA format and one sequence /protein per file. Create a folder under your working directory, and put all the sequence of the query proteins in this folder.  
+The sequence should be stored in FASTA format and one protein sequence per file. Create a folder under your working directory, and put all the sequences of the query proteins in this folder.  
 
 ### Protein-protein interaction/association data (Optional)
-The PPI and functional association information should be stored as edge lists using the tab-separated values (.tsv) format. In the tab-separated edge list files, each protein-protein interaction (PPI) or functional association (PPA) is expressed as a row with the proteins shown in an example below. The PPI and PPA information are stored separately in two .tsv files (shown as PPA_edgelist.tsv and PPI_edgelist.tsv in the example below).
+The PPI and functional association information should be stored as edge lists using the tab-separated values (.tsv) format. In the tab-separated edge list files, each protein-protein interaction (PPI) or functional association (PPA) is expressed as a row with the proteins shown in the example below. The PPI and PPA information are stored separately in two .tsv files (shown as PPA_edgelist.tsv and PPI_edgelist.tsv in the example below).
 ```
 P06241  P40337
 Q99728  P38398
@@ -93,7 +93,7 @@ An example of the input data directory is shown below.
 ```
 
 ### Protein region annotation file (For occlusion map, optional)
-The annotation file need to be formatted in CSV format as shown below, with each row indicating the coordinates, type, name of the annotated region, and the coloring scheme (optional) for the annotations.
+The annotation file needs to be formatted in CSV format as shown below, with each row indicating the coordinates, type, name of the annotated region, and the coloring scheme (optional) for the annotations.
  <img src="figs/region_annotation_file.png">
 
 
@@ -133,11 +133,11 @@ occlusion_map3 -s /PATH/TO/FASTA_FILE_FOLDER \
 --annotation_file /PATH/TO/PROTEIN_REGION_ANNOATION_FILE \ 
 --draw_ensemble_only
 ```
-In the output folder you will find the occlusion map plots as below:
+In the output folder you will find the occlusion map plots below:
  <img src="figs/RBFOX2_occlusion.png">
  
 # Train a new HydRa model
-Run the following command by replacing the parts in the upper case, such as the location of your folder that contains the fasta files of your query proteins `/PATH/TO/FASTA_FILE_FOLDER`, the location where you want to store the output files `/PATH/TO/OUTPUT_FOLDER`, the location of the ProteinBERT-RBP model file `/PATH/TO/PROTEINBERT-ORIGINAL-MODEL` that you can download from [here](ftp://ftp.cs.huji.ac.il/users/nadavb/protein_bert/epoch_92400_sample_23500000.pkl) (Yeo lab TSCC user can use the file `/home/wjin/projects/RBP_pred/RBP_identification/HydRa2.0/data/ProteinBERT/default.pkl` on TSCC for this argument directly), and a customized name for this prediction `MAKE_A_NAME_FOR_THE_PREDICTION` (optional). User can also specify the proteins for training by `--train_list /PATH/TO/GENE_IDs_FOR_TRAINING` where `/PATH/TO/GENE_IDs_FOR_TRAINING` could be a text file with one gene ID/name per row. To train HydRa model with PPI/PPA data, the file path for the PPI and PPA data is also needed.
+Run the following command by replacing the parts in the upper case, such as the location of your folder that contains the fasta files of your query proteins `/PATH/TO/FASTA_FILE_FOLDER`, the location where you want to store the output files `/PATH/TO/OUTPUT_FOLDER`, the location of the ProteinBERT-RBP model file `/PATH/TO/PROTEINBERT-ORIGINAL-MODEL` that you can download from [here](ftp://ftp.cs.huji.ac.il/users/nadavb/protein_bert/epoch_92400_sample_23500000.pkl) (Yeo lab TSCC user can use the file `/home/wjin/projects/RBP_pred/RBP_identification/HydRa2.0/data/ProteinBERT/default.pkl` on TSCC for this argument directly), and a customized name for this prediction `MAKE_A_NAME_FOR_THE_PREDICTION` (optional). Users can also specify the proteins for training by `--train_list /PATH/TO/GENE_IDs_FOR_TRAINING` where `/PATH/TO/GENE_IDs_FOR_TRAINING` could be a text file with one gene ID/name per row. To train the HydRA model with PPI/PPA data, the file path for the PPI and PPA data is also needed.
 ```
 HydRa_train2  --model_name Model_Name --model_outdir /PATH/TO/OUTPUT_FOLDER -s /PATH/TO/FASTA_FILE_FOLDER \ 
 --train_list /PATH/TO/GENE_IDs_FOR_TRAINING --PPI_edgelist /PATH/TO/PPI_EDGE_LIST  --PPA_edgelist /PATH/TO/PPA_EDGE_LIST \ 
@@ -159,6 +159,6 @@ HydRa2_train_eval  --model_name Model_Name --model_outdir /PATH/TO/OUTPUT_FOLDER
 More details and new updates on StrucGNNs for RBP predictions are located at: https://github.com/Wenhao-Jin/strucGNN_RBP
 
 # Practical Notes:
-HydRA has incorporated the predictions from HydRA-seq and SONAR3.0 via statistical integration and has higher overall sensitivity, specificity and precision than HydRA-seq and SONAR3.0. But in practice, whether to combine/intersect the positive prediction results from HydRA, HydRA-seq, and SONAR3.0 or “HydRA only” depends on the task at hand. For instance, if our goal is to create a comprehensive and exhaustive list of RBPs, meaning that we only care about sensitivity, we can combine the positive predictions from all three classifiers. However, if we aim to create a highly reliable list of RBPs, prioritizing precision and specificity, we can take the intersection of the positive predictions from the three classifiers. Nevertheless, combining positive predictions will often decrease specificity and precision, whereas taking the intersection will negatively impact sensitivity. Thus, by default, we assume we need a list of predictions with high specificity, precision, and sensitivity simultaneously, which is achieved by using the HydRA-only strategy.
+HydRA has incorporated the predictions from HydRA-seq and SONAR3.0 via statistical integration and has higher overall sensitivity, specificity, and precision than HydRA-seq and SONAR3.0. But in practice, whether to combine/intersect the positive prediction results from HydRA, HydRA-seq, and SONAR3.0 or “HydRA only” depends on the task at hand. For instance, if our goal is to create a comprehensive and exhaustive list of RBPs, meaning that we only care about sensitivity, we can combine the positive predictions from all three classifiers. However, if we aim to create a highly reliable list of RBPs, prioritizing precision and specificity, we can take the intersection of the positive predictions from the three classifiers. Nevertheless, combining positive predictions will often decrease specificity and precision, whereas taking the intersection will negatively impact sensitivity. Thus, by default, we assume we need a list of predictions with high specificity, precision, and sensitivity simultaneously, which is achieved by using the HydRA-only strategy.
 
 
