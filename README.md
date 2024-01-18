@@ -122,7 +122,7 @@ HydRa2_predict --seq_dir /PATH/TO/FASTA_FILES \
 ```
 If `--PPI_edgelist` and `--PPA_edgelist` are not provided, the default human PPI (from Mentha (downloaded on Jan 8, 2018) and BioPlex2.0) and PPA (from STRING_v10.5, while experimentally identified records are excluded) data will be used.
 
-The final prediction scores are in the *_HydRa_predictions.csv file in the output folder.
+The final prediction scores are in the `*_HydRa_predictions.csv` file in the output folder.
 
 # Occlusion Map analysis
 Run the following command by replacing the parts in the upper case, such as the location of your folder that contains the fasta files of your query proteins `/PATH/TO/FASTA_FILE_FOLDER`, the location where you want to store the output files `/PATH/TO/OUTPUT_FOLDER`, the location of the ProteinBERT-RBP model file you downloaded previously `/PATH/TO/PROTEINBERT-RBP-MODEL`, and a customized name for this prediction `MAKE_A_NAME_FOR_THE_PREDICTION` (optional). To plot the annotation track (showing the distribution of specific types of features, e.g. protein domain, disordered region, etc., along the protein sequence), the file path for the protein region annotation file `/PATH/TO/PROTEIN_REGION_ANNOATION_FILE` (see more details [here](#protein-region-annotation-file-for-occlusion-map-optional)) is also needed. For Yeo lab TSCC user, you could also use the `/home/wjin/projects/RBP_pred/RBP_identification/HydRa2.0/data/ProteinBERT/ProteinBERT_TrainWithWholeProteinSet_defaultSetting_ModelFile.pkl` on TSCC for `/PATH/TO/PROTEINBERT-RBP-MODEL` instead.
@@ -135,7 +135,7 @@ occlusion_map3 -s /PATH/TO/FASTA_FILE_FOLDER \
 --annotation_file /PATH/TO/PROTEIN_REGION_ANNOATION_FILE \
 --draw_ensemble_only
 ```
-In the output folder you will find the occlusion map plots (named as "*_OcclusionMap1D.pdf") like the one below:
+In the output folder you will find the occlusion map plots (named as `*_OcclusionMap1D.png` or `*_OcclusionMap1D.pdf`) like the one below:
  <img src="figs/RBFOX2_occlusion.png">
 
 The amino acid resolution occlusion scores are scored in the files named as "*_Occlusion_score_matrix_full_aac_addZscoresProtLenWiseFib_pvalues.xls" in the output folder.
