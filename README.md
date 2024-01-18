@@ -56,7 +56,7 @@ Download ProteinBERT-RBP model (i.e. ProteinBERT_TrainWithWholeProteinSet_defaul
 
 # Prepare the input data
 ### Protein sequences
-The sequence should be stored in FASTA format and one protein sequence per file. Create a folder under your working directory, and put all the sequences of the query proteins in this folder.  
+The sequence should be stored in FASTA format and one protein sequence per file. The file suffix `.fasta` is required. Create a folder under your working directory, and put all the sequences of the query proteins in this folder.  
 
 ### Protein-protein interaction/association data (Optional)
 The PPI and functional association information should be stored as edge lists using the tab-separated values (.tsv) format. In the tab-separated edge list files, each protein-protein interaction (PPI) or functional association (PPA) is expressed as a row with the proteins shown in the example below. The PPI and PPA information are stored separately in two .tsv files (shown as PPA_edgelist.tsv and PPI_edgelist.tsv in the example below).
