@@ -135,9 +135,11 @@ occlusion_map3 -s /PATH/TO/FASTA_FILE_FOLDER \
 --annotation_file /PATH/TO/PROTEIN_REGION_ANNOATION_FILE \
 --draw_ensemble_only
 ```
-In the output folder you will find the occlusion map plots below:
+In the output folder you will find the occlusion map plots (named as "*_OcclusionMap1D.pdf") like the one below:
  <img src="figs/RBFOX2_occlusion.png">
- 
+
+The amino acid resolution occlusion scores are scored in the files named as "*_Occlusion_score_matrix_full_aac_addZscoresProtLenWiseFib_pvalues.xls" in the output folder.
+
 # Train a new HydRa model
 Run the following command by replacing the parts in the upper case, such as the location of your folder that contains the fasta files of your query proteins `/PATH/TO/FASTA_FILE_FOLDER`, the location where you want to store the output files `/PATH/TO/OUTPUT_FOLDER`, the location of the ProteinBERT-RBP model file `/PATH/TO/PROTEINBERT-ORIGINAL-MODEL` that you can download from [here](ftp://ftp.cs.huji.ac.il/users/nadavb/protein_bert/epoch_92400_sample_23500000.pkl) (Yeo lab TSCC user can use the file `/home/wjin/projects/RBP_pred/RBP_identification/HydRa2.0/data/ProteinBERT/default.pkl` on TSCC for this argument directly), and a customized name for this prediction `MAKE_A_NAME_FOR_THE_PREDICTION` (optional). Users can also specify the proteins for training by `--train_list /PATH/TO/GENE_IDs_FOR_TRAINING` where `/PATH/TO/GENE_IDs_FOR_TRAINING` could be a text file with one gene ID/name per row. To train the HydRA model with PPI/PPA data, the file path for the PPI and PPA data is also needed.
 ```
