@@ -56,7 +56,7 @@ Download ProteinBERT-RBP model (i.e. ProteinBERT_TrainWithWholeProteinSet_defaul
 
 # Prepare the input data
 ### Protein sequences
-The sequence should be stored in FASTA format and one protein sequence per file. The file suffix `.fasta` is required. Create a folder under your working directory, and put all the sequences of the query proteins in this folder.  
+The sequence should be stored in FASTA format and one protein sequence per file. The suffix `.fasta` is required in the filenames. Create a folder under your working directory, and put all the sequences of the query proteins in this folder.  
 
 ### Protein-protein interaction/association data (Optional)
 The PPI and functional association information should be stored as edge lists using the tab-separated values (.tsv) format. In the tab-separated edge list files, each protein-protein interaction (PPI) or functional association (PPA) is expressed as a row with the proteins shown in the example below. The PPI and PPA information are stored separately in two .tsv files (shown as PPA_edgelist.tsv and PPI_edgelist.tsv in the example below).
@@ -121,6 +121,8 @@ HydRa2_predict --seq_dir /PATH/TO/FASTA_FILES \
 --PPA_edgelist PATH/TO/PPA_EDGE_LIST
 ```
 If `--PPI_edgelist` and `--PPA_edgelist` are not provided, the default human PPI (from Mentha (downloaded on Jan 8, 2018) and BioPlex2.0) and PPA (from STRING_v10.5, while experimentally identified records are excluded) data will be used.
+
+The final prediction scores are in the *_HydRa_predictions.csv file in the output folder.
 
 # Occlusion Map analysis
 Run the following command by replacing the parts in the upper case, such as the location of your folder that contains the fasta files of your query proteins `/PATH/TO/FASTA_FILE_FOLDER`, the location where you want to store the output files `/PATH/TO/OUTPUT_FOLDER`, the location of the ProteinBERT-RBP model file you downloaded previously `/PATH/TO/PROTEINBERT-RBP-MODEL`, and a customized name for this prediction `MAKE_A_NAME_FOR_THE_PREDICTION` (optional). To plot the annotation track (showing the distribution of specific types of features, e.g. protein domain, disordered region, etc., along the protein sequence), the file path for the protein region annotation file `/PATH/TO/PROTEIN_REGION_ANNOATION_FILE` (see more details [here](#protein-region-annotation-file-for-occlusion-map-optional)) is also needed. For Yeo lab TSCC user, you could also use the `/home/wjin/projects/RBP_pred/RBP_identification/HydRa2.0/data/ProteinBERT/ProteinBERT_TrainWithWholeProteinSet_defaultSetting_ModelFile.pkl` on TSCC for `/PATH/TO/PROTEINBERT-RBP-MODEL` instead.
