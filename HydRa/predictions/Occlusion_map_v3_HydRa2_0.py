@@ -1116,6 +1116,7 @@ def plot_occlusion(RBP_uniprotID, out_dir, wind_size, annotation_file=None, anno
     |---------------------------------------------------------
 
     """
+    print('-------------------------------')
     print(RBP_uniprotID)
     if not run_fdr_ensemble:
         path=os.path.join(out_dir,RBP_uniprotID+'_Occlusion_score_matrix_full_aac_addZscoresProtLenWiseFib_pvalues.xls')
@@ -1227,8 +1228,10 @@ def plot_occlusion(RBP_uniprotID, out_dir, wind_size, annotation_file=None, anno
             plt.tight_layout()
             if not run_fdr_ensemble:
                 f.savefig(os.path.join(out_dir,RBP_uniprotID+'_OcclusionMap1D.pdf'),format='pdf')
+                f.savefig(os.path.join(out_dir,RBP_uniprotID+'_OcclusionMap1D.png'),format='png')
             else:
                 f.savefig(os.path.join(out_dir,RBP_uniprotID+'_FdrEns_OcclusionMap1D.pdf'),format='pdf')
+                f.savefig(os.path.join(out_dir,RBP_uniprotID+'_FdrEns_OcclusionMap1D.png'),format='png')
         else:
             ax[len(types)].plot(range(len(delta_SVM)),delta_SVM, lw=2)
             ax[len(types)].set_xlim(0,len(delta_SVM))
@@ -1286,8 +1289,10 @@ def plot_occlusion(RBP_uniprotID, out_dir, wind_size, annotation_file=None, anno
             plt.tight_layout()
             if not run_fdr_ensemble:
                 f.savefig(os.path.join(out_dir,RBP_uniprotID+'_OcclusionMap1D.pdf'),format='pdf')
+                f.savefig(os.path.join(out_dir,RBP_uniprotID+'_OcclusionMap1D.png'),format='png')
             else:
                 f.savefig(os.path.join(out_dir,RBP_uniprotID+'_FdrEns_OcclusionMap1D.pdf'),format='pdf')
+                f.savefig(os.path.join(out_dir,RBP_uniprotID+'_FdrEns_OcclusionMap1D.png'),format='png')
     else:
         if draw_ensemble_only == True:
             f, (ax4, ax5) = plt.subplots(2, 1, figsize=(20, 6))
@@ -1350,8 +1355,10 @@ def plot_occlusion(RBP_uniprotID, out_dir, wind_size, annotation_file=None, anno
         plt.tight_layout()
         if not run_fdr_ensemble:
             f.savefig(os.path.join(out_dir,RBP_uniprotID+'_OcclusionMap1D.pdf'),format='pdf')
+            f.savefig(os.path.join(out_dir,RBP_uniprotID+'_OcclusionMap1D.png'),format='png')
         else:
             f.savefig(os.path.join(out_dir,RBP_uniprotID+'_FdrEns_OcclusionMap1D.pdf'),format='pdf')
+            f.savefig(os.path.join(out_dir,RBP_uniprotID+'_FdrEns_OcclusionMap1D.png'),format='png')
         
 def main(args):
     no_secondary_structure=args.no_secondary_structure
