@@ -13,19 +13,21 @@ Paper: [Jin et al., Molecular Cell, 2023](https://www.cell.com/molecular-cell/pd
  HydRA
  <img src="figs/HydRA_final.png">
 
+The pre-computed HydRA scores for most human proteins can be found in the supplementary Table S2 of the paper above. Also attached [here](). 
+
 # Installation
-HydRa is tested to work under Python 3.8. Run the following code in your terminal window to install HydRa. It was recommended to build a new conda environment and do the HydRa installation to avoid messing up your current python environment. An installation tutorial for conda could be found [here](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html).
+HydRA is tested to work under Python 3.8. Run the following code in your terminal window to install HydRA. It was recommended to build a new conda environment and do the HydRA installation to avoid messing up your current python environment. An installation tutorial for conda could be found [here](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html).
 
 ## For Linux user:
 ```
-## Create a conda environment for HydRa, and activate the environment
-conda create -n "HydRa" python=3.8.12 -y
-conda activate HydRa
+## Create a conda environment for HydRA, and activate the environment
+conda create -n "HydRA" python=3.8.12 -y
+conda activate HydRA
 
-## Install the dependency packages for HydRa
+## Install the dependency packages for HydRA
 pip3 install pandas numpy protobuf==3.20.3 networkx==2.6.3 scikit-learn==0.22.1 tensorflow==2.6.0 keras==2.6.0 matplotlib==3.4.3 setuptools Pygments packaging protein-bert
 
-## Install HydRa
+## Install HydRA
 pip3 install hydra-rbp --no-deps
 ## Alternative command: python3 -m pip install --index-url https://test.pypi.org/simple/ --no-deps --upgrade hydra-rbp
 ```
@@ -34,7 +36,7 @@ Download ProteinBERT-RBP model (i.e. ProteinBERT_TrainWithWholeProteinSet_defaul
 ## For Mac os (M1/M2 chips) user (Sorry, we are still working on it):
 The installation of Tensorflow on Mac OS (m1/m2) chips are different from that in Linux system (a good tutorial can be found [here](https://github.com/deganza/Install-TensorFlow-on-Mac-M1-GPU/blob/main/Install-TensorFlow-on-Mac-M1-GPU.ipynb))
 ```
-## Create a conda environment for HydRa, and activate the environment
+## Create a conda environment for HydRA, and activate the environment
 conda create -n "HydRA" python=3.9 -y
 conda activate HydRA
 
@@ -43,11 +45,11 @@ conda install -c apple tensorflow-deps -y
 
 ## Install scikit-learn 0.22 on Mac m1/m2, not feasible it.
 
-## Install the dependency packages for HydRa
+## Install the dependency packages for HydRA
 pip3 install pandas numpy protobuf==3.20.3 networkx==2.6.3 scikit-learn matplotlib setuptools Pygments packaging protein-bert
 python -m pip install tensorflow-macos==2.7.0
 
-## Install HydRa
+## Install HydRA
 pip3 install hydra-rbp --no-deps
 ## Alternative command: python3 -m pip install --index-url https://test.pypi.org/simple/ --no-deps --upgrade hydra-rbp
 ```
@@ -140,7 +142,7 @@ In the output folder, you will find the occlusion map plots (named as `*_Occlusi
 
 The amino acid resolution occlusion scores are scored in the files named as `*_Occlusion_score_matrix_full_aac_addZscoresProtLenWiseFib_pvalues.xls` in the output folder.
 
-# Train a new HydRa model
+# Train a new HydRA model
 Run the following command by replacing the parts in the upper case, such as the location of your folder that contains the fasta files of your query proteins `/PATH/TO/FASTA_FILE_FOLDER`, the location where you want to store the output files `/PATH/TO/OUTPUT_FOLDER`, the location of the ProteinBERT-RBP model file `/PATH/TO/PROTEINBERT-ORIGINAL-MODEL` that you can download from [here](ftp://ftp.cs.huji.ac.il/users/nadavb/protein_bert/epoch_92400_sample_23500000.pkl) (Yeo lab TSCC user can use the file `/home/wjin/projects/RBP_pred/RBP_identification/HydRa2.0/data/ProteinBERT/default.pkl` on TSCC for this argument directly), and a customized name for this prediction `MAKE_A_NAME_FOR_THE_PREDICTION` (optional). Users can also specify the proteins for training by `--train_list /PATH/TO/GENE_IDs_FOR_TRAINING` where `/PATH/TO/GENE_IDs_FOR_TRAINING` could be a text file with one gene ID/name per row. To train the HydRA model with PPI/PPA data, the file path for the PPI and PPA data is also needed.
 ```
 HydRa_train2  --model_name Model_Name --model_outdir /PATH/TO/OUTPUT_FOLDER -s /PATH/TO/FASTA_FILE_FOLDER \ 
@@ -149,8 +151,8 @@ HydRa_train2  --model_name Model_Name --model_outdir /PATH/TO/OUTPUT_FOLDER -s /
 --new-pretrain
 ```
 
-# Train and evaluate a new HydRa model
-Run the following command by replacing the parts in the upper case, such as the location of your folder that contains the fasta files of your query proteins `/PATH/TO/FASTA_FILE_FOLDER`, the location where you want to store the output files `/PATH/TO/OUTPUT_FOLDER`, the location of the ProteinBERT-RBP model file `/PATH/TO/PROTEINBERT-ORIGINAL-MODEL` that you can download from [here](ftp://ftp.cs.huji.ac.il/users/nadavb/protein_bert/epoch_92400_sample_23500000.pkl) (Yeo lab TSCC user can use the file `/home/wjin/projects/RBP_pred/RBP_identification/HydRa2.0/data/ProteinBERT/default.pkl` on TSCC for this argument directly), and a customized name for this prediction `MAKE_A_NAME_FOR_THE_PREDICTION` (optional). User can also specify the proteins for training and evaluation by `--train_list` and `--test_list` where `/PATH/TO/GENE_IDs_FOR_TRAINING` and `/PATH/TO/GENE_IDs_FOR_TEST` could be text files with one gene ID/name per row. To train HydRa model with PPI/PPA data, the file path for the PPI and PPA data is also needed.
+# Train and evaluate a new HydRA model
+Run the following command by replacing the parts in the upper case, such as the location of your folder that contains the fasta files of your query proteins `/PATH/TO/FASTA_FILE_FOLDER`, the location where you want to store the output files `/PATH/TO/OUTPUT_FOLDER`, the location of the ProteinBERT-RBP model file `/PATH/TO/PROTEINBERT-ORIGINAL-MODEL` that you can download from [here](ftp://ftp.cs.huji.ac.il/users/nadavb/protein_bert/epoch_92400_sample_23500000.pkl) (Yeo lab TSCC user can use the file `/home/wjin/projects/RBP_pred/RBP_identification/HydRa2.0/data/ProteinBERT/default.pkl` on TSCC for this argument directly), and a customized name for this prediction `MAKE_A_NAME_FOR_THE_PREDICTION` (optional). User can also specify the proteins for training and evaluation by `--train_list` and `--test_list` where `/PATH/TO/GENE_IDs_FOR_TRAINING` and `/PATH/TO/GENE_IDs_FOR_TEST` could be text files with one gene ID/name per row. To train HydRA model with PPI/PPA data, the file path for the PPI and PPA data is also needed.
 
 ```
 HydRa2_train_eval  --model_name Model_Name --model_outdir /PATH/TO/OUTPUT_FOLDER -s /PATH/TO/FASTA_FILE_FOLDER \ 
