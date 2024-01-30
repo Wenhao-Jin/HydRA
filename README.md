@@ -13,7 +13,7 @@ Paper: [Jin et al., Molecular Cell, 2023](https://www.cell.com/molecular-cell/pd
  HydRA
  <img src="figs/HydRA_final.png">
 
-The pre-computed HydRA scores for most human proteins can be found in the supplementary Table S2 of the paper above. Also attached [here](). 
+The pre-computed HydRA scores for most human proteins can be found in the supplementary Table S2 of the paper above. Also attached [here](files/HydRA_TableS2.xlsx). 
 
 # Installation
 HydRA is tested to work under Python 3.8. Run the following code in your terminal window to install HydRA. It was recommended to build a new conda environment and do the HydRA installation to avoid messing up your current python environment. An installation tutorial for conda could be found [here](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html).
