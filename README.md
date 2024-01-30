@@ -13,7 +13,7 @@ Please cite: [Jin et al., Molecular Cell, 2023](https://www.cell.com/molecular-c
  HydRA
  <img src="figs/HydRA_final.png">
 
-# 
+# Notes Before Start
 The pre-computed HydRA scores for most human proteins can be found in the supplementary Table S2 of the paper above. Also attached [here](files/HydRA_TableS2.xlsx). 
 
 # Installation
