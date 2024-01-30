@@ -35,8 +35,8 @@ Download ProteinBERT-RBP model (i.e. ProteinBERT_TrainWithWholeProteinSet_defaul
 The installation of Tensorflow on Mac OS (m1/m2) chips are different from that in Linux system (a good tutorial can be found [here](https://github.com/deganza/Install-TensorFlow-on-Mac-M1-GPU/blob/main/Install-TensorFlow-on-Mac-M1-GPU.ipynb))
 ```
 ## Create a conda environment for HydRa, and activate the environment
-conda create -n "HydRa" python=3.9 -y
-conda activate HydRa
+conda create -n "HydRA" python=3.9 -y
+conda activate HydRA
 
 ## Install tensorflow on Mac m1/m2
 conda install -c apple tensorflow-deps -y  
