@@ -22,8 +22,8 @@ The pre-computed HydRA scores for most human proteins are available in the suppl
 2. [Prepare the input data](#data_preparation)
 3. [RBP prediction](#rbp_prediction)
 4. [Occlusion Map analysis](#OcclusionMap)
-6. [Train a new HydRA model](#Train_new_model)
-7. [Train and evaluate a new HydRA model](#Train_and_Evaluate)
+6. [Train a new HydRA model](#TrainNewModel)
+7. [Train and evaluate a new HydRA model](#TrainAndEvaluate)
 8. [StrucGNNs](#StrucGNNs)
 9. [Practical Notes](#notes)
 
@@ -155,7 +155,7 @@ In the output folder, you will find the occlusion map plots (named as `*_Occlusi
 
 The amino acid resolution occlusion scores are scored in the files named as `*_Occlusion_score_matrix_full_aac_addZscoresProtLenWiseFib_pvalues.xls` in the output folder.
 
-# <a id="Train_new_model"></a>Train a new HydRA model
+# <a id="TrainNewModel"></a>Train a new HydRA model
 Run the following command by replacing the parts in the upper case, such as the location of your folder that contains the fasta files of your query proteins `/PATH/TO/FASTA_FILE_FOLDER`, the location where you want to store the output files `/PATH/TO/OUTPUT_FOLDER`, the location of the ProteinBERT-RBP model file `/PATH/TO/PROTEINBERT-ORIGINAL-MODEL` that you can download from [here](ftp://ftp.cs.huji.ac.il/users/nadavb/protein_bert/epoch_92400_sample_23500000.pkl) (Yeo lab TSCC user can use the file `/tscc/nfs/home/wjin/projects/RBP_pred/RBP_identification/HydRa2.0/data/ProteinBERT/default.pkl` on TSCC for this argument directly), and a customized name for this prediction `MAKE_A_NAME_FOR_THE_PREDICTION` (optional). Users can also specify the proteins for training by `--train_list /PATH/TO/GENE_IDs_FOR_TRAINING` where `/PATH/TO/GENE_IDs_FOR_TRAINING` could be a text file with one gene ID/name per row. To train the HydRA model with PPI/PPA data, the file path for the PPI and PPA data is also needed. Use the `--RBP_list` option to define the positive samples in your training set.
 ```
 HydRa_train2  --model_name Model_Name --model_outdir /PATH/TO/OUTPUT_FOLDER -s /PATH/TO/FASTA_FILE_FOLDER \ 
@@ -164,7 +164,7 @@ HydRa_train2  --model_name Model_Name --model_outdir /PATH/TO/OUTPUT_FOLDER -s /
 --new-pretrain
 ```
 
-# <a id="Train_and_Evaluate"></a>Train and evaluate a new HydRA model
+# <a id="TrainAndEvaluate"></a>Train and evaluate a new HydRA model
 Run the following command by replacing the parts in the upper case, such as the location of your folder that contains the fasta files of your query proteins `/PATH/TO/FASTA_FILE_FOLDER`, the location where you want to store the output files `/PATH/TO/OUTPUT_FOLDER`, the location of the ProteinBERT-RBP model file `/PATH/TO/PROTEINBERT-ORIGINAL-MODEL` that you can download from [here](ftp://ftp.cs.huji.ac.il/users/nadavb/protein_bert/epoch_92400_sample_23500000.pkl) (Yeo lab TSCC user can use the file `/tscc/nfs/home/wjin/projects/RBP_pred/RBP_identification/HydRa2.0/data/ProteinBERT/default.pkl` on TSCC for this argument directly), and a customized name for this prediction `MAKE_A_NAME_FOR_THE_PREDICTION` (optional). User can also specify the proteins for training and evaluation by `--train_list` and `--test_list` where `/PATH/TO/GENE_IDs_FOR_TRAINING` and `/PATH/TO/GENE_IDs_FOR_TEST` could be text files with one gene ID/name per row. To train HydRA model with PPI/PPA data, the file path for the PPI and PPA data is also needed. Use the `--RBP_list` option to define the positive samples in your training and test set.
 
 ```
