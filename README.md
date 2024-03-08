@@ -19,12 +19,12 @@ The pre-computed HydRA scores for most human proteins are available in the suppl
 
 # Table of Contents
 1. [Installation](#introduction)
-2. Prepare the input data
-3. RBP prediction
-4. Occlusion Map analysis
-6. Train a new HydRA model
-7. Train and evaluate a new HydRA model
-8. StrucGNNs
+2. [Prepare the input data](#Data_Preparation)
+3. [RBP prediction](#RBP_prediction)
+4. [Occlusion Map analysis](#OcclusionMap)
+6. [Train a new HydRA model](#Train_new_model)
+7. [Train and evaluate a new HydRA model](#Train_and_Evaluate)
+8. [StrucGNNs](#StrucGNNs)
 
 
 # <a id="introduction"></a>Installation
