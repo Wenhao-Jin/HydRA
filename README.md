@@ -174,6 +174,7 @@ HydRa2_train_eval  --model_name Model_Name --model_outdir /PATH/TO/OUTPUT_FOLDER
 --RBP_list /YOUR/RBP/LIST --ProteinBERT_pretrainedBeforeFinetune_model /PATH/TO/PROTEINBERT-ORIGINAL-MODEL \ 
 --new-pretrain
 ```
+
 # <a id="StrucGNNs"></a>StrucGNNs
 More details and new updates on StrucGNNs for RBP predictions are located at: https://github.com/Wenhao-Jin/strucGNN_RBP
 
