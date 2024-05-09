@@ -147,27 +147,27 @@ def main(args):
             G2=nx.read_edgelist(PPA_edgelist)
             G2.remove_edges_from(nx.selfloop_edges(G2))
 
-    ## Load training and test dataset if available        
-    if train_list!=None and test_list!=None:
-        with open(train_list) as f:
-            train_prots=f.read().split('\n')
-            train_prots=list(filter(lambda x: os.path.exists(os.path.join(seq_dir,x+'.fasta')), train_prots))
-        with open(test_list) as f:
-            test_prots=f.read().split('\n')
-            test_prots=list(filter(lambda x: os.path.exists(os.path.join(seq_dir,x+'.fasta')), test_prots))
-            
-        if len(set(train_prots).difference(G1.nodes))>0:
-            train_prots=[p for p in train_prots if p in G1]
-            warnings.warn('Some of the proteins in the training list can not be found in the PPI network. They will be ignored during the training and evaluation.')
-        if len(set(test_prots).difference(G1.nodes))>0:
-            test_prots=[p for p in test_prots if p in G1]
-            warnings.warn('Some of the proteins in the test list can not be found in the PPI network. They will be ignored during the training and evaluation.')
-        print('Training and test proteins are loaded from user provided files.')
-        prots=list(set(prots).intersection(set(train_prots).union(set(test_prots))))
-    else:
-        if len(set(prots).difference(G1.nodes))>0:
-            warnings.warn('Some of the proteins in the sequence folder can not be found in the PPI network. They will be ignored during the training and evaluation.')
-            prots=[p for p in prots if p in G1]
+        ## Load training and test dataset if available        
+        if train_list!=None and test_list!=None:
+            with open(train_list) as f:
+                train_prots=f.read().split('\n')
+                train_prots=list(filter(lambda x: os.path.exists(os.path.join(seq_dir,x+'.fasta')), train_prots))
+            with open(test_list) as f:
+                test_prots=f.read().split('\n')
+                test_prots=list(filter(lambda x: os.path.exists(os.path.join(seq_dir,x+'.fasta')), test_prots))
+                
+            if len(set(train_prots).difference(G1.nodes))>0:
+                train_prots=[p for p in train_prots if p in G1]
+                warnings.warn('Some of the proteins in the training list can not be found in the PPI network. They will be ignored during the training and evaluation.')
+            if len(set(test_prots).difference(G1.nodes))>0:
+                test_prots=[p for p in test_prots if p in G1]
+                warnings.warn('Some of the proteins in the test list can not be found in the PPI network. They will be ignored during the training and evaluation.')
+            print('Training and test proteins are loaded from user provided files.')
+            prots=list(set(prots).intersection(set(train_prots).union(set(test_prots))))
+        else:
+            if len(set(prots).difference(G1.nodes))>0:
+                warnings.warn('Some of the proteins in the sequence folder can not be found in the PPI network. They will be ignored during the training and evaluation.')
+                prots=[p for p in prots if p in G1]
 
     prot_seq_list=[]
     for prot in prots: 
