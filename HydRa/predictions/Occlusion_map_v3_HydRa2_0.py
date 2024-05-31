@@ -1591,9 +1591,13 @@ def main(args):
     ###### Generate score statistics from reference dataset
     if use_Zscore==True and ref_seq_dir!=None and out_dir2!=None:
         ### Run zscore normalization, zscore integration and p-value calcuation for reference data.
-        HydRa_score_whole_df=pd.read_table(reference_all_score_file, index_col=0)
+        if reference_all_score_file.endswith('.csv'):
+            HydRa_score_whole_df=pd.read_csv(reference_all_score_file, index_col=0)
+        else:
+            HydRa_score_whole_df=pd.read_table(reference_all_score_file, index_col=0)
+            
         if not ("Protein_length" in HydRa_score_whole_df.columns):
-            HydRa_score_whole_df['Protein_length']=list(map(lambda x: get_protein_length(x, ref_seq_dir), HydRa_score_whole_df.index))
+            HydRa_score_whole_df['Protein_length']=list(map(lambda x: get_protein_length(os.path.join(ref_seq_dir, x+'.fasta')), HydRa_score_whole_df.index))
 
         prot_len_dic0=HydRa_score_whole_df['Protein_length'].to_dict()
         ## get reference score dict for deltaSVM and deltaDNN
