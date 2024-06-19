@@ -168,6 +168,14 @@ def main(args):
             if len(set(prots).difference(G1.nodes))>0:
                 warnings.warn('Some of the proteins in the sequence folder can not be found in the PPI network. They will be ignored during the training and evaluation.')
                 prots=[p for p in prots if p in G1]
+    else:
+        if train_list!=None and test_list!=None:
+            with open(train_list) as f:
+                train_prots=f.read().split('\n')
+                train_prots=list(filter(lambda x: os.path.exists(os.path.join(seq_dir,x+'.fasta')), train_prots))
+            with open(test_list) as f:
+                test_prots=f.read().split('\n')
+                test_prots=list(filter(lambda x: os.path.exists(os.path.join(seq_dir,x+'.fasta')), test_prots))
 
     prot_seq_list=[]
     for prot in prots: 
