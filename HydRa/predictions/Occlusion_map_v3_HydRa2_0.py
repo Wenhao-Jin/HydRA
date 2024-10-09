@@ -1169,7 +1169,7 @@ def plot_occlusion(RBP_uniprotID, out_dir, wind_size, annotation_file=None, anno
             if color_flag:
                 bar=np.ones([len(delta_ens),4])
                 for coord in coords:
-                    bar[(coord[0]-1):coord[1]]=list(colors.to_rgba(coords[2]))
+                    bar[(coord[0]-1):coord[1]]=list(colors.to_rgba(coord[2]))
             else:
                 bar=np.zeros(len(delta_ens))
                 for coord in coords:
