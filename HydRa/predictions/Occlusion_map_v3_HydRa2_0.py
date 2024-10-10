@@ -1140,6 +1140,12 @@ def plot_occlusion(RBP_uniprotID, out_dir, wind_size, annotation_file=None, anno
     delta_ProteinBERT=[0]*int((wind_size-1)/2)+delta_ProteinBERT+[0]*int((wind_size)/2)
     delta_ens=[0]*int((wind_size-1)/2)+delta_ens+[0]*int((wind_size)/2)
 
+    ## wj, Oct 2024
+    # Define the total length of the bar and the bar height for the horizontal bar in ax2
+    bar_length = len(delta_ens)  # total length of the bar
+    y = 0  # y-position of the bar
+    bar_width = bar_length*0.8/1000  # height of the bar (increased for better visibility)
+    
     if annotation_file!=None:
         ann_df=pd.read_csv(annotation_file, sep=annotation_file_separator)
         ann_df=ann_df[ann_df['Protein']==RBP_uniprotID]
@@ -1166,27 +1172,30 @@ def plot_occlusion(RBP_uniprotID, out_dir, wind_size, annotation_file=None, anno
             coords=list(zip(tmp_df.Start, tmp_df.Stop, tmp_df.Color))
             tmp_df.Region_name=tmp_df.Region_name.apply(lambda x: '' if pd.isnull(x) else x)
             regions=list(tmp_df.Region_name)
-            if color_flag:
-                bar=np.ones([len(delta_ens),4])
-                for coord in coords:
-                    bar[(coord[0]-1):coord[1]]=list(colors.to_rgba(coord[2]))
-            else:
-                bar=np.zeros(len(delta_ens))
-                for coord in coords:
-                    bar[(coord[0]-1):coord[1]]=-i
+            
+            ## wj, Oct 2024
+            ax[i].barh(y, bar_length, height=bar_width, color='white', edgecolor='black')
+            # Plot each colored region
+            for start, end, color in coords:
+                ax[i].barh(y, end - start, left=start, height=bar_width, color=color, edgecolor='black')
+            # Remove ticks (both x and y) for the bar
+            ax[i].set_xticks([])
+            ax[i].set_yticks([])
+            # Remove the frame (spines) around the bar
+            ax[i].spines['top'].set_visible(False)
+            ax[i].spines['right'].set_visible(False)
+            ax[i].spines['bottom'].set_visible(False)
+            ax[i].spines['left'].set_visible(False)
+            # Adjust ylim to control the height of the bar (make sure it's visible but compact)
+            ax[i].set_ylim(-0.5, 0.5)  # Make sure this matches the bar_width for better results
 
-            bar=np.array([bar]*max(int(len(delta_ens)/80),1))
-            if color_flag:
-                im=ax[i].imshow(bar, vmin=-8, vmax=0)
-            else:
-                im=ax[i].imshow(bar, cmap=cm, vmin=-8, vmax=0)
-            ax[i].axes.get_yaxis().set_visible(False)
             if len(coords)>0:
                 for dom, (start, end, _) in zip(regions,coords):
                     if dom:
-                        ax[i].text((start+end)/2, 0.5*int(len(delta_ens)/100), dom, fontsize='large', horizontalalignment='center',verticalalignment='center')
+                        ax[i].text((start+end)/2, 0, dom, fontsize='large', horizontalalignment='center',verticalalignment='center')
 
             ax[i].set_title(RBP_uniprotID+'_'+t,fontsize='x-large',verticalalignment='bottom')
+
         if draw_ensemble_only == True:
             ax[len(types)].plot(range(len(delta_ens)),delta_ens, lw=1.5, c='k')
             ax[len(types)].set_xlim(0,len(delta_ens))
@@ -1204,22 +1213,31 @@ def plot_occlusion(RBP_uniprotID, out_dir, wind_size, annotation_file=None, anno
             print("sig peak regions (p<{}): {}".format(p_threshold1,', '.join(merge_peaks(list(peaks_coords1)))))
             print("sig peak regions (p<{}): {}".format(p_threshold2,', '.join(merge_peaks(list(peaks_coords2)))))
             #print(occ_df[occ_df['avg_zscore_deltaSVM_deltaDNN_deltaProteinBERT_pvalue']<=p_threshold2][['avg_zscore_deltaSVM_deltaDNN_deltaProteinBERT_pvalue','occluded_coord']])
-            peaks_pos1=set([])
-            peaks_pos2=set([])
+            ## wj, Oct 2024
+            ax[len(types)+1].barh(y, bar_length, height=bar_width, color='white', edgecolor='black')
+            # Plot each colored region
             for coo1 in peaks_coords1:
-                peaks_pos1.update(list(range(int(coo1.split('-')[0]),int(coo1.split('-')[1])+1)))
+                start = int(coo1.split('-')[0])
+                end = int(coo1.split('-')[1])+1
+                ax[len(types)+1].barh(y, end - start, left=start, height=bar_width, color='lightskyblue')
+
             for coo2 in peaks_coords2:
-                peaks_pos2.update(list(range(int(coo2.split('-')[0]),int(coo2.split('-')[1])+1)))    
-            peak_bar=np.zeros(len(occ_df)+19)
-    #                 print(peaks_pos1)
-    #                 print(peaks_pos2)
-            for i in peaks_pos1:
-                peak_bar[i]=1
-            for j in peaks_pos2:
-                peak_bar[j]=2
-            peak_bar=np.array([peak_bar]*max(int(len(occ_df)/60),1))
-            ax[len(types)+1].imshow(peak_bar, cmap=pvalue_cmap, vmin=0, vmax=2)
+                start = int(coo2.split('-')[0])
+                end = int(coo2.split('-')[1])+1
+                ax[len(types)+1].barh(y, end - start, left=start, height=bar_width, color='steelblue')
+
+            # Remove ticks (both x and y) for the bar
+            ax[len(types)+1].set_xticks([])
+            ax[len(types)+1].set_yticks([])
+            # Remove the frame (spines) around the bar
+            ax[len(types)+1].spines['top'].set_visible(False)
+            ax[len(types)+1].spines['right'].set_visible(False)
+            ax[len(types)+1].spines['bottom'].set_visible(False)
+            ax[len(types)+1].spines['left'].set_visible(False)
+            # Adjust ylim to control the height of the bar (make sure it's visible but compact)
+            ax[len(types)+1].set_ylim(-0.5, 0.5)  # Make sure this matches the bar_width for better results
             ax[len(types)+1].set_title('Significant occlusion peaks',fontsize='x-large',verticalalignment='bottom')
+
             ## Create custom legend lines
             custom_lines = [Line2D([0], [0], color="lightskyblue", lw=6),
                             Line2D([0], [0], color="steelblue", lw=6)]
@@ -1263,22 +1281,30 @@ def plot_occlusion(RBP_uniprotID, out_dir, wind_size, annotation_file=None, anno
             peaks_coords2=occ_df[occ_df['avg_zscore_deltaSVM_deltaDNN_deltaProteinBERT_pvalue']<=p_threshold2]['occluded_coord']
             print("sig peak regions (p<{}): {}".format(p_threshold1,', '.join(merge_peaks(list(peaks_coords1)))))
             print("sig peak regions (p<{}): {}".format(p_threshold2,', '.join(merge_peaks(list(peaks_coords2)))))
-            #print(occ_df[occ_df['avg_zscore_deltaSVM_deltaDNN_deltaProteinBERT_pvalue']<=p_threshold2][['avg_zscore_deltaSVM_deltaDNN_deltaProteinBERT_pvalue','occluded_coord']])
-            peaks_pos1=set([])
-            peaks_pos2=set([])
+            #print(occ_df[occ_df['avg_zscore_deltaSVM_deltaDNN_deltaProteinBERT_pvalue']<=p_threshold2][['avg_zscore_deltaSVM_deltaDNN_deltaProteinBERT_pvalue','occluded_coord']]) 
+            ## wj, Oct 2024
+            ax[len(types)+4].barh(y, bar_length, height=bar_width, color='white', edgecolor='black')
+            # Plot each colored region
             for coo1 in peaks_coords1:
-                peaks_pos1.update(list(range(int(coo1.split('-')[0]),int(coo1.split('-')[1])+1)))
+                start = int(coo1.split('-')[0])
+                end = int(coo1.split('-')[1])+1
+                ax[len(types)+4].barh(y, end - start, left=start, height=bar_width, color='lightskyblue')
+
             for coo2 in peaks_coords2:
-                peaks_pos2.update(list(range(int(coo2.split('-')[0]),int(coo2.split('-')[1])+1)))    
-            peak_bar=np.zeros(len(occ_df)+19)
-    #                 print(peaks_pos1)
-    #                 print(peaks_pos2)
-            for i in peaks_pos1:
-                peak_bar[i]=1
-            for j in peaks_pos2:
-                peak_bar[j]=2
-            peak_bar=np.array([peak_bar]*max(int(len(occ_df)/60),1))
-            ax[len(types)+4].imshow(peak_bar, cmap=pvalue_cmap, vmin=0, vmax=2)
+                start = int(coo2.split('-')[0])
+                end = int(coo2.split('-')[1])+1
+                ax[len(types)+4].barh(y, end - start, left=start, height=bar_width, color='steelblue')
+
+            # Remove ticks (both x and y) for the bar
+            ax[len(types)+4].set_xticks([])
+            ax[len(types)+4].set_yticks([])
+            # Remove the frame (spines) around the bar
+            ax[len(types)+4].spines['top'].set_visible(False)
+            ax[len(types)+4].spines['right'].set_visible(False)
+            ax[len(types)+4].spines['bottom'].set_visible(False)
+            ax[len(types)+4].spines['left'].set_visible(False)
+            # Adjust ylim to control the height of the bar (make sure it's visible but compact)
+            ax[len(types)+4].set_ylim(-0.5, 0.5)  # Make sure this matches the bar_width for better results
             ax[len(types)+4].set_title('Significant occlusion peaks',fontsize='x-large',verticalalignment='bottom')
             ## Create custom legend lines
             custom_lines = [Line2D([0], [0], color="lightskyblue", lw=6),
@@ -1330,22 +1356,30 @@ def plot_occlusion(RBP_uniprotID, out_dir, wind_size, annotation_file=None, anno
         print("sig peak regions (p<{}): {}".format(p_threshold1,', '.join(merge_peaks(list(peaks_coords1)))))
         print("sig peak regions (p<{}): {}".format(p_threshold2,', '.join(merge_peaks(list(peaks_coords2)))))
         #print(occ_df[occ_df['avg_zscore_deltaSVM_deltaDNN_deltaProteinBERT_pvalue']<=p_threshold2][['avg_zscore_deltaSVM_deltaDNN_deltaProteinBERT_pvalue','occluded_coord']])
-        peaks_pos1=set([])
-        peaks_pos2=set([])
+        ## wj, Oct 2024
+        ax5.barh(y, bar_length, height=bar_width, color='white', edgecolor='black')
+        # Plot each colored region
         for coo1 in peaks_coords1:
-            peaks_pos1.update(list(range(int(coo1.split('-')[0]),int(coo1.split('-')[1])+1)))
+            start = int(coo1.split('-')[0])
+            end = int(coo1.split('-')[1])+1
+            ax[len(types)+4].barh(y, end - start, left=start, height=bar_width, color='lightskyblue')
+
         for coo2 in peaks_coords2:
-            peaks_pos2.update(list(range(int(coo2.split('-')[0]),int(coo2.split('-')[1])+1)))    
-        peak_bar=np.zeros(len(occ_df)+19)
-#                 print(peaks_pos1)
-#                 print(peaks_pos2)
-        for i in peaks_pos1:
-            peak_bar[i]=1
-        for j in peaks_pos2:
-            peak_bar[j]=2
-        peak_bar=np.array([peak_bar]*max(int(len(occ_df)/60),1))
-        ax5.imshow(peak_bar, cmap=pvalue_cmap, vmin=0, vmax=2)
-        ax5.set_title('Significant occlusion peaks',fontsize='x-large', verticalalignment='bottom')
+            start = int(coo2.split('-')[0])
+            end = int(coo2.split('-')[1])+1
+            ax[len(types)+4].barh(y, end - start, left=start, height=bar_width, color='steelblue')
+
+        # Remove ticks (both x and y) for the bar
+        ax5.set_xticks([])
+        ax5.set_yticks([])
+        # Remove the frame (spines) around the bar
+        ax5.spines['top'].set_visible(False)
+        ax5.spines['right'].set_visible(False)
+        ax5.spines['bottom'].set_visible(False)
+        ax5.spines['left'].set_visible(False)
+        # Adjust ylim to control the height of the bar (make sure it's visible but compact)
+        ax5.set_ylim(-0.5, 0.5)  # Make sure this matches the bar_width for better results
+        ax5.set_title('Significant occlusion peaks',fontsize='x-large',verticalalignment='bottom')
         ## Create custom legend lines
         custom_lines = [Line2D([0], [0], color="lightskyblue", lw=6),
                         Line2D([0], [0], color="steelblue", lw=6)]
