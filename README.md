@@ -45,7 +45,7 @@ pip3 install pandas numpy protobuf==3.20.3 networkx==2.6.3 scikit-learn==0.22.1 
 pip3 install hydra-rbp --no-deps
 ## Alternative command: python3 -m pip install --index-url https://test.pypi.org/simple/ --no-deps --upgrade hydra-rbp
 ```
-Download ProteinBERT-RBP model (i.e. ProteinBERT_TrainWithWholeProteinSet_defaultSetting_ModelFile.pkl) from the assets of Releases v0.1.21.36 in this repository [here](https://github.com/Wenhao-Jin/HydRA/releases/download/v0.1.21.36/ProteinBERT_TrainWithWholeProteinSet_defaultSetting_ModelFile.pkl). (If you are Yeo Lab TSCC user, skip this step.) 
+Download ProteinBERT-RBP model (i.e. ProteinBERT_TrainWithWholeProteinSet_defaultSetting_ModelFile.pkl) from the assets of Releases v0.1.21.37 in this repository [here](https://github.com/Wenhao-Jin/HydRA/releases/download/v0.1.21.37/ProteinBERT_TrainWithWholeProteinSet_defaultSetting_ModelFile.pkl). (If you are Yeo Lab TSCC user, skip this step.) 
 
 ## For Mac os (M1/M2 chips) user (Sorry, we are still working on it):
 The installation of Tensorflow on Mac OS (m1/m2) chips are different from that in Linux system (a good tutorial can be found [here](https://github.com/deganza/Install-TensorFlow-on-Mac-M1-GPU/blob/main/Install-TensorFlow-on-Mac-M1-GPU.ipynb))
@@ -68,7 +68,7 @@ pip3 install hydra-rbp --no-deps
 ## Alternative command: python3 -m pip install --index-url https://test.pypi.org/simple/ --no-deps --upgrade hydra-rbp
 ```
 
-Download ProteinBERT-RBP model (i.e. ProteinBERT_TrainWithWholeProteinSet_defaultSetting_ModelFile.pkl) from the assets of Releases v0.1.21.36 in this repository [here](https://github.com/Wenhao-Jin/HydRA/releases/download/v0.1.21.36/ProteinBERT_TrainWithWholeProteinSet_defaultSetting_ModelFile.pkl). (If you are Yeo Lab TSCC user, skip this step.) 
+Download ProteinBERT-RBP model (i.e. ProteinBERT_TrainWithWholeProteinSet_defaultSetting_ModelFile.pkl) from the assets of Releases v0.1.21.37 in this repository [here](https://github.com/Wenhao-Jin/HydRA/releases/download/v0.1.21.37/ProteinBERT_TrainWithWholeProteinSet_defaultSetting_ModelFile.pkl). (If you are Yeo Lab TSCC user, skip this step.) 
 
 <a id="data_preparation"></a>
 # Prepare the input data
