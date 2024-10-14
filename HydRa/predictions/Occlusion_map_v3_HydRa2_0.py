@@ -1153,9 +1153,9 @@ def plot_occlusion(RBP_uniprotID, out_dir, wind_size, annotation_file=None, anno
         ann_df_g=ann_df.groupby('Type')
         types=list(ann_df_g.groups.keys())
         if draw_ensemble_only == True:
-            f, ax = plt.subplots(2+len(types), 1, figsize=(20, 3*(2+len(types))))
+            f, ax = plt.subplots(2+len(types), 1, figsize=(20, 3*(2+len(types))), sharex=True)
         else:
-            f, ax = plt.subplots(5+len(types), 1, figsize=(20, 3*(5+len(types))))
+            f, ax = plt.subplots(5+len(types), 1, figsize=(20, 3*(5+len(types))), sharex=True)
         cm = plt.cm.get_cmap('Pastel1')
         for i in range(len(types)):
             t=types[i]
