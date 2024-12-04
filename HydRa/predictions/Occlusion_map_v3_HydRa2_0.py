@@ -1362,12 +1362,12 @@ def plot_occlusion(RBP_uniprotID, out_dir, wind_size, annotation_file=None, anno
         for coo1 in peaks_coords1:
             start = int(coo1.split('-')[0])
             end = int(coo1.split('-')[1])+1
-            ax[len(types)+4].barh(y, end - start, left=start, height=bar_width, color='lightskyblue')
+            ax5.barh(y, end - start, left=start, height=bar_width, color='lightskyblue')
 
         for coo2 in peaks_coords2:
             start = int(coo2.split('-')[0])
             end = int(coo2.split('-')[1])+1
-            ax[len(types)+4].barh(y, end - start, left=start, height=bar_width, color='steelblue')
+            ax5.barh(y, end - start, left=start, height=bar_width, color='steelblue')
 
         # Remove ticks (both x and y) for the bar
         ax5.set_xticks([])
