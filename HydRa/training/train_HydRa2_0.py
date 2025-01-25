@@ -679,7 +679,7 @@ def call_main():
     parser.add_argument('--ProteinBERT_pretrainedBeforeFinetune_model', dest='ProteinBERT_pretrainedBeforeFinetune_model', help='The filepath of the proteinBERT pretrained model (without finetuning). ', type=str, default=None) 
     parser.add_argument('--start_seq_len_ProteinBERT', dest='start_seq_len_ProteinBERT', help='The starting protein sequence length that are used to create the input window for ProteinBERT model.', type=int, default=512)
     parser.add_argument('--val_frac_ProteinBERT', dest='val_frac_ProteinBERT', help='The fraction out of the whole training set that are used as validation set during training for ProteinBERT model.', type=float, default=0.1)
-    parser.add_argument('--no-secondary-structure', dest='no_secondary_structure', help='Do not use secondary structure information in the model training.', action='store_true')
+    parser.add_argument('--secondary-structure', dest='no_secondary_structure', help='Do not use secondary structure information in the model training.', action='store_false')
     parser.add_argument('--no-PIA', dest='no_PIA', help='Do not use protein-protein interaction and functinoal association information in the prediction.', action='store_true')
     parser.add_argument('--no-PPA', dest='no_PPA', help='Do not use protein-protein functinoal association information in the prediction.', action='store_true')
     parser.add_argument('-S', '--seqSVM_ft_file', dest='seqSVM_ft_file', help='', metavar='FILE', default=None)
