@@ -214,22 +214,21 @@ def main(args):
         with open(train_list) as f:
             prots=f.read().split('\n')
             prots=list(filter(lambda x: os.path.exists(os.path.join(seq_dir,x+'.fasta')), prots))
- 
+     
     if no_secondary_structure==False:
         if train_list == None:
             prots2=set((map(lambda x: '.'.join(x.split('.')[:-1]), list(filter(lambda x: x.endswith('.txt') or x.endswith('.spd3'), os.listdir(seq_dir))))))
             prots=[p for p in prots if p in prots2]
         else:
             prots=list(filter(lambda x: os.path.exists(os.path.join(seq_dir,x+'.txt')) or os.path.exists(os.path.join(seq_dir,x+'.spd3')), prots))
-        
-
-
+       
     prot_seq_list=[]
     for prot in prots: 
         with open(os.path.join(seq_dir,prot+'.fasta')) as f:
             seq=''.join(f.read().strip(' \n').split('\n')[1:])
             prot_seq_list.append((prot, seq, len(seq), prot in RBPs))
 
+    print('debug, prot_list:', prot_seq_list) # wj, debug
     Info_df=pd.DataFrame(prot_seq_list, columns=['Protein', 'Sequence', 'protein_len','RBP_flag']).set_index('Protein')
     Info_df['RBP_flag']=Info_df['RBP_flag'].apply(lambda x: 1 if x else 0)
 
@@ -679,7 +678,8 @@ def call_main():
     parser.add_argument('--ProteinBERT_pretrainedBeforeFinetune_model', dest='ProteinBERT_pretrainedBeforeFinetune_model', help='The filepath of the proteinBERT pretrained model (without finetuning). ', type=str, default=None) 
     parser.add_argument('--start_seq_len_ProteinBERT', dest='start_seq_len_ProteinBERT', help='The starting protein sequence length that are used to create the input window for ProteinBERT model.', type=int, default=512)
     parser.add_argument('--val_frac_ProteinBERT', dest='val_frac_ProteinBERT', help='The fraction out of the whole training set that are used as validation set during training for ProteinBERT model.', type=float, default=0.1)
-    parser.add_argument('--no-secondary-structure', dest='no_secondary_structure', help='Do not use secondary structure information in the model training.', action='store_true')
+    #parser.add_argument('--no-secondary-structure', dest='no_secondary_structure', help='Do not use secondary structure information in the model training.', action='store_true')
+    parser.add_argument('--secondary-structure', dest='no_secondary_structure', help='Do not use secondary structure information in the model training.', action='store_false')
     parser.add_argument('--no-PIA', dest='no_PIA', help='Do not use protein-protein interaction and functinoal association information in the prediction.', action='store_true')
     parser.add_argument('--no-PPA', dest='no_PPA', help='Do not use protein-protein functinoal association information in the prediction.', action='store_true')
     parser.add_argument('-S', '--seqSVM_ft_file', dest='seqSVM_ft_file', help='', metavar='FILE', default=None)

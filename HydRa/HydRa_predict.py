@@ -7,14 +7,15 @@ import os
 from sklearn.model_selection import StratifiedKFold
 from sklearn.metrics import roc_curve, auc, recall_score, precision_recall_curve, average_precision_score
 from keras.models import Sequential, Model, load_model, model_from_json
-from keras.layers import Dense, Input, Dropout, Activation, merge, Layer, InputSpec, add, Concatenate
+from keras.layers import Dense, Input, Dropout, Activation, Layer, InputSpec, add, Concatenate
 from keras.layers import Embedding
 from keras.layers import Conv1D, MaxPooling1D, GlobalMaxPooling1D, BatchNormalization
 from keras import metrics
 import keras.backend as K
 from keras.callbacks import EarlyStopping, ReduceLROnPlateau, ModelCheckpoint
-from scipy import interp, stats
-from keras.layers.wrappers import TimeDistributed, Bidirectional
+from scipy import stats
+from numpy import interp
+from tensorflow.keras.layers import TimeDistributed, Bidirectional
 from keras.layers.core import Reshape
 from keras.models import load_model
 from keras import regularizers

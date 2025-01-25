@@ -19,8 +19,10 @@ from keras.layers import Conv1D, MaxPooling1D, GlobalMaxPooling1D, BatchNormaliz
 from keras import metrics
 import keras.backend as K
 from keras.callbacks import EarlyStopping, ReduceLROnPlateau, ModelCheckpoint
-from scipy import interp, stats
-from keras.layers.wrappers import TimeDistributed, Bidirectional
+from scipy import stats
+from numpy import interp
+#from keras.layers.wrappers import TimeDistributed, Bidirectional
+from tensorflow.keras.layers import TimeDistributed, Bidirectional
 from keras.layers.core import Reshape
 from keras import regularizers
 from sklearn.linear_model import LogisticRegression
@@ -1145,7 +1147,8 @@ def plot_occlusion(RBP_uniprotID, out_dir, wind_size, annotation_file=None, anno
     bar_length = len(delta_ens)  # total length of the bar
     y = 0  # y-position of the bar
     bar_width = bar_length*0.8/1000  # height of the bar (increased for better visibility)
-    
+
+
     if annotation_file!=None:
         ann_df=pd.read_csv(annotation_file, sep=annotation_file_separator)
         ann_df=ann_df[ann_df['Protein']==RBP_uniprotID]
@@ -1169,10 +1172,14 @@ def plot_occlusion(RBP_uniprotID, out_dir, wind_size, annotation_file=None, anno
                 color_flag=False
             else:
                 color_flag=True # using customized colors
-            coords=list(zip(tmp_df.Start, tmp_df.Stop, tmp_df.Color))
+
+            if color_flag == True:
+                coords=list(zip(tmp_df.Start, tmp_df.Stop, tmp_df.Color))
+            else:
+                coords=list(zip(tmp_df.Start, tmp_df.Stop, ['pink']*len(tmp_df)))
             tmp_df.Region_name=tmp_df.Region_name.apply(lambda x: '' if pd.isnull(x) else x)
             regions=list(tmp_df.Region_name)
-            
+
             ## wj, Oct 2024
             ax[i].barh(y, bar_length, height=bar_width, color='white', edgecolor='black')
             # Plot each colored region
@@ -1213,6 +1220,13 @@ def plot_occlusion(RBP_uniprotID, out_dir, wind_size, annotation_file=None, anno
             print("sig peak regions (p<{}): {}".format(p_threshold1,', '.join(merge_peaks(list(peaks_coords1)))))
             print("sig peak regions (p<{}): {}".format(p_threshold2,', '.join(merge_peaks(list(peaks_coords2)))))
             #print(occ_df[occ_df['avg_zscore_deltaSVM_deltaDNN_deltaProteinBERT_pvalue']<=p_threshold2][['avg_zscore_deltaSVM_deltaDNN_deltaProteinBERT_pvalue','occluded_coord']])
+            peaks_pos1=set([])
+            peaks_pos2=set([])
+            for coo1 in peaks_coords1:
+                peaks_pos1.update(list(range(int(coo1.split('-')[0]),int(coo1.split('-')[1])+1)))
+            for coo2 in peaks_coords2:
+                peaks_pos2.update(list(range(int(coo2.split('-')[0]),int(coo2.split('-')[1])+1)))    
+
             ## wj, Oct 2024
             ax[len(types)+1].barh(y, bar_length, height=bar_width, color='white', edgecolor='black')
             # Plot each colored region
@@ -1237,6 +1251,7 @@ def plot_occlusion(RBP_uniprotID, out_dir, wind_size, annotation_file=None, anno
             # Adjust ylim to control the height of the bar (make sure it's visible but compact)
             ax[len(types)+1].set_ylim(-0.5, 0.5)  # Make sure this matches the bar_width for better results
             ax[len(types)+1].set_title('Significant occlusion peaks',fontsize='x-large',verticalalignment='bottom')
+
 
             ## Create custom legend lines
             custom_lines = [Line2D([0], [0], color="lightskyblue", lw=6),
@@ -1281,7 +1296,14 @@ def plot_occlusion(RBP_uniprotID, out_dir, wind_size, annotation_file=None, anno
             peaks_coords2=occ_df[occ_df['avg_zscore_deltaSVM_deltaDNN_deltaProteinBERT_pvalue']<=p_threshold2]['occluded_coord']
             print("sig peak regions (p<{}): {}".format(p_threshold1,', '.join(merge_peaks(list(peaks_coords1)))))
             print("sig peak regions (p<{}): {}".format(p_threshold2,', '.join(merge_peaks(list(peaks_coords2)))))
-            #print(occ_df[occ_df['avg_zscore_deltaSVM_deltaDNN_deltaProteinBERT_pvalue']<=p_threshold2][['avg_zscore_deltaSVM_deltaDNN_deltaProteinBERT_pvalue','occluded_coord']]) 
+            #print(occ_df[occ_df['avg_zscore_deltaSVM_deltaDNN_deltaProteinBERT_pvalue']<=p_threshold2][['avg_zscore_deltaSVM_deltaDNN_deltaProteinBERT_pvalue','occluded_coord']])
+            peaks_pos1=set([])
+            peaks_pos2=set([])
+            for coo1 in peaks_coords1:
+                peaks_pos1.update(list(range(int(coo1.split('-')[0]),int(coo1.split('-')[1])+1)))
+            for coo2 in peaks_coords2:
+                peaks_pos2.update(list(range(int(coo2.split('-')[0]),int(coo2.split('-')[1])+1)))    
+
             ## wj, Oct 2024
             ax[len(types)+4].barh(y, bar_length, height=bar_width, color='white', edgecolor='black')
             # Plot each colored region
@@ -1306,6 +1328,7 @@ def plot_occlusion(RBP_uniprotID, out_dir, wind_size, annotation_file=None, anno
             # Adjust ylim to control the height of the bar (make sure it's visible but compact)
             ax[len(types)+4].set_ylim(-0.5, 0.5)  # Make sure this matches the bar_width for better results
             ax[len(types)+4].set_title('Significant occlusion peaks',fontsize='x-large',verticalalignment='bottom')
+
             ## Create custom legend lines
             custom_lines = [Line2D([0], [0], color="lightskyblue", lw=6),
                             Line2D([0], [0], color="steelblue", lw=6)]
@@ -1356,6 +1379,20 @@ def plot_occlusion(RBP_uniprotID, out_dir, wind_size, annotation_file=None, anno
         print("sig peak regions (p<{}): {}".format(p_threshold1,', '.join(merge_peaks(list(peaks_coords1)))))
         print("sig peak regions (p<{}): {}".format(p_threshold2,', '.join(merge_peaks(list(peaks_coords2)))))
         #print(occ_df[occ_df['avg_zscore_deltaSVM_deltaDNN_deltaProteinBERT_pvalue']<=p_threshold2][['avg_zscore_deltaSVM_deltaDNN_deltaProteinBERT_pvalue','occluded_coord']])
+        peaks_pos1=set([])
+        peaks_pos2=set([])
+        for coo1 in peaks_coords1:
+            peaks_pos1.update(list(range(int(coo1.split('-')[0]),int(coo1.split('-')[1])+1)))
+        for coo2 in peaks_coords2:
+            peaks_pos2.update(list(range(int(coo2.split('-')[0]),int(coo2.split('-')[1])+1)))    
+        peak_bar=np.zeros(len(occ_df)+19)
+#                 print(peaks_pos1)
+#                 print(peaks_pos2)
+        for i in peaks_pos1:
+            peak_bar[i]=1
+        for j in peaks_pos2:
+            peak_bar[j]=2
+
         ## wj, Oct 2024
         ax5.barh(y, bar_length, height=bar_width, color='white', edgecolor='black')
         # Plot each colored region
@@ -1380,6 +1417,8 @@ def plot_occlusion(RBP_uniprotID, out_dir, wind_size, annotation_file=None, anno
         # Adjust ylim to control the height of the bar (make sure it's visible but compact)
         ax5.set_ylim(-0.5, 0.5)  # Make sure this matches the bar_width for better results
         ax5.set_title('Significant occlusion peaks',fontsize='x-large',verticalalignment='bottom')
+
+
         ## Create custom legend lines
         custom_lines = [Line2D([0], [0], color="lightskyblue", lw=6),
                         Line2D([0], [0], color="steelblue", lw=6)]

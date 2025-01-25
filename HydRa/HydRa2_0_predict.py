@@ -6,22 +6,28 @@ from matplotlib import pyplot as plt
 import os
 from sklearn.model_selection import StratifiedKFold
 from sklearn.metrics import roc_curve, auc, recall_score, precision_recall_curve, average_precision_score
-from keras.models import Sequential, Model, load_model, model_from_json
-from keras.layers import Dense, Input, Dropout, Activation, Layer, InputSpec, add, Concatenate
-from keras.layers import Embedding
-from keras.layers import Conv1D, MaxPooling1D, GlobalMaxPooling1D, BatchNormalization
-from keras import metrics
-import keras.backend as K
-from keras.callbacks import EarlyStopping, ReduceLROnPlateau, ModelCheckpoint
-from scipy import interp, stats
-from keras.layers.wrappers import TimeDistributed, Bidirectional
-from keras.layers.core import Reshape
-from keras.models import load_model
-from keras import regularizers
+import tensorflow as tf
+from tensorflow import keras
+from tensorflow.keras.models import Sequential, Model, load_model, model_from_json
+from tensorflow.keras.layers import (
+    Dense, Input, Dropout, Activation, Layer, InputSpec,
+    Add, Concatenate, Embedding, Conv1D, MaxPooling1D,
+    GlobalMaxPooling1D, BatchNormalization, TimeDistributed,
+    Bidirectional, Reshape
+)
+from tensorflow.keras import metrics
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.optimizers.legacy import Adam as LegacyAdam
+import tensorflow.keras.backend as K
+from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau, ModelCheckpoint
+from tensorflow.keras import regularizers
+from scipy.interpolate import interp1d
+from scipy import stats
 from sklearn.linear_model import LogisticRegression
 from sklearn import svm
 from sklearn.svm import SVC
 from sklearn.base import clone
+
 import pickle
 import re
 import matplotlib.gridspec as gridspec
@@ -136,6 +142,8 @@ def main(args):
 				seqDNN_modelfile_weight = pkg_resources.resource_filename(__name__, 'pre_trained/DNN_seqOnly_trainedWithWholeDataset_menthaBioPlexSTRING_Final_Model_v4_7_3_MenthaBioPlex_STRING_AddingOOPSXRNAXlabels_newSklearn0.22.1_noSS_WithNoSSmodel_model_weights.h5')
 			if seqSVM_modelfile == None:
 				seqSVM_modelfile = pkg_resources.resource_stream(__name__, 'pre_trained/SVM_seqOnly_trainedWithWholeDataset_menthaBioPlexSTRING_Final_Model_v4_7_3_MenthaBioPlex_STRING_AddingOOPSXRNAXlabels_newSklearn0.22.1_noSS_WithNoSSmodel_ModelFile.pickle.pkl')
+				#seqSVM_modelfile = pkg_resources.resource_stream(__name__, 'pre_trained/SVM_seqOnly_trainedWithWholeDataset_menthaBioPlexSTRING_Final_Model_v4_7_3_MenthaBioPlex_STRING_AddingOOPSXRNAXlabels_newSklearn0.22.1_noSS_WithNoSSmodel_ModelFile.joblib')
+				#print('Hey, hey, hey')
 		else:
 			if seqDNN_modelfile_stru == None:
 				seqDNN_modelfile_stru = pkg_resources.resource_string(__name__, 'pre_trained/DNN_seqOnly_trainedWithWholeDataset_menthaBioPlexSTRING_Final_Model_v4_7_3_MenthaBioPlex_STRING_AddingOOPSXRNAXlabels_newSklearn0.22.1_model_structure.json').decode("utf-8")
@@ -298,9 +306,9 @@ def main(args):
 			#	else:
 			#		PPI_features.append(get_PPI_feature_vec(prot, G1, RBP_merged_set, num_cut))
 			pool=mp.Pool(processes=None)
-                        result2=[pool.apply_async(get_PPI_feature_vec, args=(prot, G1, RBP_merged_set, num_cut, interactors_dic[prot],)) if prot in interactors_dic else pool.apply_async(get_PPI_feature_vec, args=(prot, G1, RBP_merged_set, num_cut,)) for prot in proteins]
-                        PPI_features=[p.get() for p in result2]
-			
+			result2=[pool.apply_async(get_PPI_feature_vec, args=(prot, G1, RBP_merged_set, num_cut, interactors_dic[prot],)) if prot in interactors_dic else pool.apply_async(get_PPI_feature_vec, args=(prot, G1, RBP_merged_set, num_cut,)) for prot in proteins]
+			PPI_features=[p.get() for p in result2]
+
 			PPI_feature_df=pd.DataFrame(PPI_features, index=proteins, columns=['primary_RBP_ratio','secondary_RBP_ratio','tertiary_RBP_ratio','Reliability'])
 			PPI_feature_file=os.path.join(score_outdir, Model_name+'_PPI_feature_table.txt')
 			PPI_feature_df.to_csv(PPI_feature_file, sep='\t', index=True)
@@ -315,9 +323,8 @@ def main(args):
 				#for prot in proteins:
 				#    PAI_features.append(get_1stPPI_feature_vec(prot, G2, RBP_merged_set, num_cut))
 				pool2=mp.Pool(processes=None)
-                                result3=[pool2.apply_async(get_1stPPI_feature_vec, args=(prot, G2, RBP_merged_set, num_cut,)) for prot in proteins]
-                                PAI_features=[p.get() for p in result3]
-				
+				result3=[pool2.apply_async(get_1stPPI_feature_vec, args=(prot, G2, RBP_merged_set, num_cut,)) for prot in proteins]
+				PAI_features=[p.get() for p in result3]
 				PAI_feature_df=pd.DataFrame(PAI_features, index=proteins, columns=['primary_RBP_ratio','Reliability'])
 				PPI2_feature_df=PPI_feature_df.join(PAI_feature_df, how='left', rsuffix='_STRING')
 
@@ -430,12 +437,54 @@ def main(args):
 
 	model_DNN.load_model2(seqDNN_modelfile_stru, seqDNN_modelfile_weight)
 
+	## loading seqSVM model
 	model_SVM=joblib.load(seqSVM_modelfile)
-	model_SVM.kernel='rbf' # To fix, sklearn conflict issue between python3 and python2 model string.
 
-	with open(proteinBERT_modelfile,'rb') as f:
-		model_ProteinBERT_generator=pickle.load(f)
-		ProteinBERT_input_encoder = InputEncoder(n_annotations)
+	model_SVM.kernel='rbf' # To fix, sklearn conflict issue between python3 and python2 model string.
+	## Verify if `probability=True` attributes are present
+	# print(hasattr(model_SVM, "probA_"))  # Should be True
+	# print(hasattr(model_SVM, "probB_"))  # Should be True
+	# print(hasattr(model_SVM, "support_"))  # Should be True
+
+	# Load the proteinBERT-RBP model using the new keras version.
+	class CustomUnpickler(pickle.Unpickler):
+		def find_class(self, module, name):
+			# Handle Adam optimizer specifically
+			if module == 'tensorflow.keras.optimizers.legacy.adam':
+				return LegacyAdam
+			elif module == 'keras.optimizer_v2.adam':
+				return LegacyAdam
+
+			# Map old module paths to new ones
+			module_mapping = {
+				'keras.optimizer_v2': 'tensorflow.keras.optimizers.legacy',
+				'keras.optimizers.optimizer_v2': 'tensorflow.keras.optimizers.legacy',
+				'tensorflow.python.keras.optimizer_v2': 'tensorflow.keras.optimizers.legacy',
+				'tensorflow.keras.optimizers.adam': 'tensorflow.keras.optimizers.legacy'
+			}
+
+			# Update the module path if it matches any of our mappings
+			for old_path, new_path in module_mapping.items():
+				if module.startswith(old_path):
+					module = module.replace(old_path, new_path)
+					break
+
+			try:
+				return super().find_class(module, name)
+			except ImportError as e:
+				print(f"Debug - Attempting to import: {module}.{name}")
+				if module == 'tensorflow.keras.optimizers.legacy':
+					return LegacyAdam
+				raise e
+
+	# Load the model with custom unpickler
+	with open(proteinBERT_modelfile, 'rb') as f:
+		model_ProteinBERT_generator = CustomUnpickler(f).load()
+
+	## Old way of loading the proteinBERT-RBP model.
+	#with open(proteinBERT_modelfile,'rb') as f:
+	#	model_ProteinBERT_generator=pickle.load(f)
+	#	ProteinBERT_input_encoder = InputEncoder(n_annotations)
 
 	if PPI_feature_file:
 		model_PPI=joblib.load(PPI_modelfile)
@@ -450,7 +499,9 @@ def main(args):
 		seqDNN_score=model_DNN.predict_score(RBP_aa3mer, RBP_seqlens)
 	else:
 		seqDNN_score=model_DNN.predict_score(RBP_aa3mer, RBP_ss_sparse_mat, RBP_seqlens)
+	
 	seqSVM_score=model_SVM.predict_proba(seqSVM_ft)[:,1]
+
 	y_pred_ProteinBERT, protein_names = get_y_pred_ProteinBERT(model_ProteinBERT_generator, ProteinBERT_input_encoder, OUTPUT_SPEC, prot_seqs_ProteinBERT, class_labels_ProteinBERT, seq_names_ProteinBERT, start_seq_len = start_seq_len_ProteinBERT, start_batch_size = 32)
 	ProteinBERT_df=pd.DataFrame(list(zip(protein_names,y_pred_ProteinBERT)), columns=['Protein','ProteinBERT_score'])
 	ProteinBERT_df=ProteinBERT_df.set_index('Protein')
