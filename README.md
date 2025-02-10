@@ -3,7 +3,7 @@
 [<img src="figs/zenodo.DOI.svg">](https://zenodo.org/badge/latestdoi/582775512)
 
 # NEW!!!
-Our webserver (Beta version) for HydRA is now online at: [https://hydra-rbp.com/](https://hydra-rbp.com/). It's still under development, many new features will come soon.
+The beta version of our HydRA web server is now live at https://hydra-rbp.com/! It is still under development, and many new features will be added soon. For the full functionality and usage of HydRA, please refer to the standalone version discussed in this repository.
 
 Please cite: [Jin et al., Molecular Cell, 2023](https://www.cell.com/molecular-cell/pdfExtended/S1097-2765(23)00466-5)
 
