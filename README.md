@@ -2,6 +2,8 @@
 # HydRA: Deep-learning models for predicting RNA-binding capacity from protein interaction association context and protein sequence.
 [<img src="figs/zenodo.DOI.svg">](https://zenodo.org/badge/latestdoi/582775512)
 
+# NEW!!!
+Our webserver (Beta version) for HydRA is now online at: [https://hydra-rbp.com/](https://hydra-rbp.com/). It's still under development, many new features will come soon.
 
 Please cite: [Jin et al., Molecular Cell, 2023](https://www.cell.com/molecular-cell/pdfExtended/S1097-2765(23)00466-5)
 
@@ -12,9 +14,6 @@ Please cite: [Jin et al., Molecular Cell, 2023](https://www.cell.com/molecular-c
  <img src="figs/HydRA_seq.png">
  HydRA
  <img src="figs/HydRA_final.png">
-
-# NEWS!!!
-Our webserver (Beta version) for HydRA is now online at: [https://hydra-rbp.com/](https://hydra-rbp.com/). It's still under development, many new features will come soon.
 
 # IMPORTANT !!!
 The pre-computed HydRA scores for most human proteins are available in the supplementary Table S2 of the paper above. Also attached [here](files/HydRA_TableS2.xlsx). 
