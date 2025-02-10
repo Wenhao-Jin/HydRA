@@ -7,6 +7,7 @@ Please cite: [Jin et al., Molecular Cell, 2023](https://www.cell.com/molecular-c
 # NEW!!!
 The beta version of our HydRA web server is now live at https://hydra-rbp.com/! It is still under development, and many new features will be added soon. For the full functionality and usage of HydRA, please refer to the standalone version discussed in this repository.
 
+# Model
  SONAR3.0
  <img src="figs/SONAR3.0.png">
  HydRA-seq
